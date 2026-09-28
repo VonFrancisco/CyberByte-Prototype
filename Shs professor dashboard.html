@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F.L.A.S.H. - SHS Professor Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <style>
+        :root {
+            --brand: #3D5AFE;
+            --brand-hover: #3249cf;
+            --ink: #0B1120;
+            --ink-2: #1E293B;
+            --paper: #F8FAFC;
+            --card: #FFFFFF;
+            --text-main: #334155;
+            --text-muted: #64748B;
+            --danger: #EF4444;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --border: #E2E8F0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--paper);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, h5, h6, .brand-font {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        /* Utility classes utilizing CSS Variables */
+        .bg-ink { background-color: var(--ink); }
+        .bg-ink-2 { background-color: var(--ink-2); }
+        .bg-paper { background-color: var(--paper); }
+        .bg-card { background-color: var(--card); }
+        .bg-brand { background-color: var(--brand); }
+        .text-brand { color: var(--brand); }
+        .hover-bg-brand:hover { background-color: var(--brand-hover); }
+        .text-ink { color: var(--ink); }
+        
+        .border-custom { border-color: var(--border); }
+        .card-shadow { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03); }
+
+        /* Chart Animations */
+        .bar-chart-fill {
+            transition: height 1s ease-out;
+        }
+
+        /* Modal Transitions */
+        .modal-enter { opacity: 0; transform: scale(0.95); }
+        .modal-enter-active { opacity: 1; transform: scale(1); transition: opacity 200ms, transform 200ms; }
+    </style>
+</head>
+<body class="antialiased h-screen flex flex-col md:flex-row overflow-hidden">
+
+    <div id="app-container" class="flex h-full w-full">
+
+        <!-- Sidebar -->
+        <aside class="w-64 bg-ink text-white flex flex-col h-full flex-shrink-0 transition-transform duration-300">
+            <div class="p-6 flex items-center gap-3">
+                <i class="ph-fill ph-lightning text-brand text-2xl"></i>
+                <span class="text-xl font-bold brand-font tracking-wide">F.L.A.S.H.</span>
+            </div>
+
+            <div class="px-6 py-2">
+                <div class="text-xs uppercase text-gray-400 font-semibold tracking-wider mb-2">Navigation</div>
+                <nav id="sidebar-nav" class="space-y-1">
+                    <!-- Dynamic links injected here -->
+                </nav>
+            </div>
+
+            <div class="mt-auto p-6 bg-ink-2 flex items-center justify-between">
+                <div class="flex items-center gap-3 overflow-hidden">
+                    <div class="w-8 h-8 rounded-full bg-brand flex items-center justify-center text-sm font-bold flex-shrink-0" id="user-initial">U</div>
+                    <div class="truncate">
+                        <div class="text-sm font-medium truncate" id="display-name">User Name</div>
+                        <div class="text-xs text-gray-400" id="display-role">Role</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="flex-1 flex flex-col h-full overflow-hidden bg-paper">
+            <header class="bg-card border-b border-custom px-8 py-4 flex items-center justify-between flex-shrink-0">
+                <h2 class="text-xl font-semibold brand-font text-ink capitalize" id="current-view-title">Dashboard</h2>
+                <div class="flex items-center gap-4">
+                    <div class="hidden md:flex items-center gap-2 text-sm text-text-muted bg-paper px-3 py-1.5 rounded-full border border-custom">
+                        <i class="ph ph-clock"></i>
+                        <span id="current-time">00:00 AM</span>
+                    </div>
+                </div>
+            </header>
+
+            <div id="view-container" class="flex-1 overflow-y-auto p-8 relative">
+                <!-- Content injected here via JS -->
+            </div>
+        </main>
+    </div>
+
+    <!-- Global Modal Overlay -->
+    <div id="global-modal" class="fixed inset-0 bg-ink/50 backdrop-blur-sm z-[100] hidden items-center justify-center p-4">
+        <div id="modal-content" class="bg-card w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden border border-custom">
+            <!-- Modal inner content injected here -->
+        </div>
+    </div>
+
+    <script>
+        // Fixed user for this dashboard (no login page)
+        const currentUser = { name: 'Prof. Maria Santos', role: 'SHS Professor' };
+        let activeTimer = null;
+        let mockRosterInterval = null;
+
+        const navLinks = [
+                { id: 'home', label: 'My Classes', icon: 'ph-chalkboard-teacher' },
+                { id: 'session', label: 'Live Session', icon: 'ph-broadcast' },
+                { id: 'reports', label: 'Class Reports', icon: 'ph-file-text' }
+            ];
+
+        // DOM Elements
+        const sidebarNav = document.getElementById('sidebar-nav');
+        const viewContainer = document.getElementById('view-container');
+        const currentViewTitle = document.getElementById('current-view-title');
+        const globalModal = document.getElementById('global-modal');
+        const modalContent = document.getElementById('modal-content');
+
+        // Clock
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('current-time').innerText = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        }
+        updateClock();
+        setInterval(updateClock, 1000);
+
+        // Profile block
+        document.getElementById('display-name').innerText = currentUser.name;
+        document.getElementById('display-role').innerText = currentUser.role;
+        document.getElementById('user-initial').innerText = currentUser.name.replace(/^(Prof\.|Dir\.)\s*/, '').charAt(0).toUpperCase();
+
+        function renderSidebar() {
+            sidebarNav.innerHTML = navLinks.map(link => `
+                <button onclick="switchView('${link.id}')" id="nav-${link.id}" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors text-gray-400 hover:text-white hover:bg-ink-2">
+                    <i class="ph ${link.icon} text-lg"></i>
+                    ${link.label}
+                </button>
+            `).join('');
+        }
+
+        function switchView(viewId) {
+            const links = sidebarNav.querySelectorAll('button');
+            links.forEach(l => {
+                l.classList.remove('bg-brand', 'text-white');
+                l.classList.add('text-gray-400');
+            });
+            const activeLink = document.getElementById(`nav-${viewId}`);
+            if (activeLink) {
+                activeLink.classList.remove('text-gray-400', 'hover:bg-ink-2');
+                activeLink.classList.add('bg-brand', 'text-white');
+                currentViewTitle.innerText = activeLink.innerText.trim();
+            }
+
+            clearTimers();
+            viewContainer.innerHTML = '';
+            renderView(viewId);
+        }
+
+        function clearTimers() {
+            if(activeTimer) clearInterval(activeTimer);
+            if(mockRosterInterval) clearInterval(mockRosterInterval);
+        }
+
+        function showModal(contentHTML) {
+            modalContent.innerHTML = contentHTML;
+            globalModal.classList.remove('hidden');
+            globalModal.classList.add('flex');
+        }
+
+        function closeModal() {
+            globalModal.classList.add('hidden');
+            globalModal.classList.remove('flex');
+        }
+
+        function renderView(viewId) {
+            let html = '';
+            if (viewId === 'home') {
+                html = `
+                    <div class="mb-8">
+                        <h3 class="text-2xl font-bold text-ink brand-font">Professor Portal</h3>
+                        <p class="text-text-muted">Manage your classes and monitor attendance.</p>
+                    </div>
+
+                    <h4 class="font-semibold text-ink mb-4">Today's Schedule</h4>
+                    <div class="space-y-4">
+                        <div class="bg-card p-6 rounded-xl border-l-4 border-l-brand border border-custom card-shadow flex flex-col md:flex-row items-center justify-between gap-4">
+                            <div>
+                                <div class="text-sm text-text-muted mb-1"><i class="ph ph-clock mr-1"></i> 08:00 AM - 09:30 AM</div>
+                                <h4 class="text-xl font-bold text-ink brand-font">CS101 - Data Structures</h4>
+                                <div class="text-sm text-text-muted mt-1">Room 304 • 45 Students Enrolled</div>
+                            </div>
+                            <button onclick="switchView('session')" class="bg-brand hover-bg-brand text-white px-6 py-2.5 rounded-lg font-medium transition-colors shadow-md shadow-brand/30 whitespace-nowrap">
+                                Start Session
+                            </button>
+                        </div>
+
+                        <div class="bg-card p-6 rounded-xl border border-custom opacity-70 flex flex-col md:flex-row items-center justify-between gap-4">
+                            <div>
+                                <div class="text-sm text-text-muted mb-1"><i class="ph ph-clock mr-1"></i> 02:00 PM - 03:30 PM</div>
+                                <h4 class="text-xl font-bold text-ink brand-font">CS102 - Algorithms</h4>
+                                <div class="text-sm text-text-muted mt-1">Room 305 • 38 Students Enrolled</div>
+                            </div>
+                            <button disabled class="bg-gray-200 text-gray-500 px-6 py-2.5 rounded-lg font-medium cursor-not-allowed whitespace-nowrap">
+                                Upcoming
+                            </button>
+                        </div>
+                    </div>
+                `;
+            } else if (viewId === 'session') {
+                html = `
+                    <div class="flex flex-col lg:flex-row gap-6 h-full pb-10">
+                        <!-- Left Panel: QR Code and Timer -->
+                        <div class="lg:w-2/3 bg-card rounded-xl border border-custom card-shadow flex flex-col items-center justify-center p-10 relative">
+                            <div class="absolute top-6 left-6 text-ink font-bold brand-font text-xl">CS101 Active Session</div>
+                            
+                            <div class="text-6xl font-bold font-mono text-brand mb-8" id="session-timer">30:00</div>
+                            
+                            <!-- Mock QR Code Box -->
+                            <div class="bg-white p-4 rounded-xl border-4 border-ink shadow-lg mb-8 relative">
+                                <svg width="256" height="256" viewBox="0 0 256 256" class="fill-current text-ink">
+                                    <path d="M48,48h56v56H48V48z M48,152h56v56H48V152z M152,48h56v56h-56V48z M112,120H40v-8h72V120z M216,120h-72v-8h72V120z M112,216H40v-8h72V216z M216,216h-72v-8h72V216z"/>
+                                    <!-- Inner patterns mocked for visual effect -->
+                                    <rect x="64" y="64" width="24" height="24" />
+                                    <rect x="64" y="168" width="24" height="24" />
+                                    <rect x="168" y="64" width="24" height="24" />
+                                    <path d="M136,136h16v16h-16V136z M168,136h16v16h-16V136z M136,168h16v16h-16V168z M184,184h16v16h-16V184z M152,152h16v16h-16V152z"/>
+                                </svg>
+                                <div class="absolute inset-0 flex items-center justify-center">
+                                    <div class="bg-white p-2 rounded-lg shadow-sm border border-gray-200">
+                                        <i class="ph-fill ph-lightning text-brand text-2xl"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <p class="text-text-muted mb-8 text-center max-w-sm">Students can scan this Dynamic QR Token to record attendance. Token refreshes automatically.</p>
+                            
+                            <button onclick="endClassSession()" class="bg-danger hover:bg-red-600 text-white px-8 py-3 rounded-xl font-bold transition-colors w-full max-w-sm flex items-center justify-center gap-2">
+                                <i class="ph ph-stop-circle text-xl"></i> End Session Manually
+                            </button>
+                        </div>
+
+                        <!-- Right Panel: Live Roster -->
+                        <div class="lg:w-1/3 bg-card rounded-xl border border-custom card-shadow flex flex-col overflow-hidden">
+                            <div class="p-5 border-b border-custom bg-paper flex items-center justify-between">
+                                <h3 class="font-bold text-ink brand-font">Live Roster</h3>
+                                <span class="bg-brand/10 text-brand px-3 py-1 rounded-full text-xs font-bold" id="attendance-count">0 / 45</span>
+                            </div>
+                            <div class="flex-1 overflow-y-auto p-2" id="live-roster-list">
+                                <!-- Student items added via JS -->
+                                <div class="flex flex-col items-center justify-center h-full text-gray-400 p-8 text-center" id="empty-roster">
+                                    <i class="ph ph-users text-4xl mb-2"></i>
+                                    <p class="text-sm">Waiting for students to check-in...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                setTimeout(initLiveSession, 100);
+            } else if (viewId === 'reports') {
+                html = `
+                    <div class="bg-card p-8 rounded-xl border border-custom card-shadow text-center text-text-muted">
+                        <i class="ph ph-file-text text-5xl mb-4"></i>
+                        <h3 class="text-xl font-bold text-ink brand-font">Class Reports</h3>
+                        <p class="mt-2">Generate and view past attendance reports here.</p>
+                    </div>
+                `;
+            }
+            viewContainer.innerHTML = html;
+        }
+
+        // Professor Live Session Logic
+        window.initLiveSession = function() {
+            // Timer Logic (Mocked 30 mins)
+            let time = 30 * 60;
+            const timerEl = document.getElementById('session-timer');
+            
+            activeTimer = setInterval(() => {
+                time--;
+                if(time <= 0) {
+                    clearInterval(activeTimer);
+                    endClassSession();
+                }
+                const m = Math.floor(time / 60).toString().padStart(2, '0');
+                const s = (time % 60).toString().padStart(2, '0');
+                timerEl.innerText = `${m}:${s}`;
+            }, 1000);
+
+            // Live Roster Logic (Mock students appearing)
+            const listEl = document.getElementById('live-roster-list');
+            const countEl = document.getElementById('attendance-count');
+            const emptyEl = document.getElementById('empty-roster');
+            let count = 0;
+            const mockNames = ['Jane Doe', 'Alice Johnson', 'Mark Spencer', 'David Kim'];
+            
+            mockRosterInterval = setInterval(() => {
+                if(count < mockNames.length) {
+                    if(emptyEl) emptyEl.style.display = 'none';
+                    const name = mockNames[count];
+                    
+                    const el = document.createElement('div');
+                    el.className = 'p-3 flex items-center justify-between border-b border-gray-100 animate-[fadeIn_0.5s_ease-out]';
+                    // Inline keyframes for standard tailwind fallback
+                    el.style.animation = 'fadeIn 0.5s ease-out';
+                    
+                    const timeStr = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', second:'2-digit'});
+                    
+                    // Add mock threshold warning for 'David Kim'
+                    let warningTag = '';
+                    if(name === 'David Kim') {
+                        warningTag = '<span class="text-xs text-danger font-medium bg-red-50 px-2 py-0.5 rounded-full ml-2">Absence Threshold</span>';
+                    }
+
+                    el.innerHTML = `
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-full bg-brand/20 text-brand flex items-center justify-center font-bold text-xs">${name.charAt(0)}</div>
+                            <div>
+                                <div class="text-sm font-semibold text-ink">${name} ${warningTag}</div>
+                                <div class="text-xs text-text-muted">Checked in at ${timeStr}</div>
+                            </div>
+                        </div>
+                        <i class="ph-fill ph-check-circle text-success text-xl"></i>
+                    `;
+                    listEl.insertBefore(el, listEl.firstChild);
+                    count++;
+                    countEl.innerText = `${count} / 45`;
+                }
+            }, 3000);
+        };
+
+        // Professor AI Summary Modal
+        window.endClassSession = function() {
+            clearTimers();
+            
+            const summaryHTML = `
+                <div class="p-8">
+                    <div class="flex items-center justify-center mb-6">
+                        <div class="bg-brand/10 p-4 rounded-full text-brand">
+                            <i class="ph ph-brain text-4xl"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-2xl font-bold text-center text-ink brand-font mb-2">AI Session Summary</h3>
+                    <p class="text-center text-text-muted mb-8 text-sm">Session ended for CS101 - Data Structures</p>
+
+                    <div class="space-y-4 mb-8">
+                        <div class="bg-paper p-4 rounded-lg border border-custom flex justify-between items-center">
+                            <span class="text-sm font-medium text-text-muted">Attendance Rate</span>
+                            <span class="font-bold text-ink text-lg">92%</span>
+                        </div>
+                        <div class="bg-red-50 p-4 rounded-lg border border-red-100 text-sm">
+                            <strong class="text-red-700 block mb-1">Threshold Alerts (1)</strong>
+                            <p class="text-red-600">David Kim has reached the maximum allowed absences.</p>
+                        </div>
+                        <div class="bg-blue-50 p-4 rounded-lg border border-blue-100 text-sm">
+                            <strong class="text-brand block mb-1">AI Insight</strong>
+                            <p class="text-blue-800">Attendance improved by 5% compared to last week. Most students checked in via Mobile App (Onsite).</p>
+                        </div>
+                    </div>
+
+                    <button onclick="closeModal(); switchView('home')" class="w-full bg-ink text-white py-3 rounded-lg font-semibold hover:bg-ink-2 transition-colors">
+                        Return to Dashboard
+                    </button>
+                </div>
+            `;
+            showModal(summaryHTML);
+        };
+
+        // Initialize inline keyframes for UI animations
+        const style = document.createElement('style');
+        style.innerHTML = `
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(10px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Boot
+        renderSidebar();
+        switchView('home');
+
+    </script>
+</body>
+</html>
