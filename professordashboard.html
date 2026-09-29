@@ -1,402 +1,251 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>F.L.A.S.H. - SHS Professor Dashboard</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
-    
-    <style>
-        :root {
-            --brand: #3D5AFE;
-            --brand-hover: #3249cf;
-            --ink: #0B1120;
-            --ink-2: #1E293B;
-            --paper: #F8FAFC;
-            --card: #FFFFFF;
-            --text-main: #334155;
-            --text-muted: #64748B;
-            --danger: #EF4444;
-            --success: #10B981;
-            --warning: #F59E0B;
-            --border: #E2E8F0;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>F.L.A.S.H. - SHS Professor Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css">
+<style>
+:root{--ultra:#2A3FFF;--ultra-2:#1F31D6;--deep:#0E1A66;--flash:#FFD426;--canvas:#EDF0F9;--line:#DCE1F1;--ink:#0F1533;--muted:#5B6386;--ok:#0E9F6E;--bad:#E03E4E;--warn:#B87400}
+*{box-sizing:border-box}[hidden]{display:none!important}
+html,body{height:100%;margin:0}
+body{font:15px/1.5 'Instrument Sans',system-ui,sans-serif;color:var(--ink);background:var(--canvas);-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4,.d{font-family:'Bricolage Grotesque','Instrument Sans',sans-serif;letter-spacing:-.02em;margin:0}
+button,input,select{font:inherit}button{cursor:pointer}
+:focus-visible{outline:3px solid var(--ultra);outline-offset:2px}.side :focus-visible{outline-color:var(--flash)}
+.app{display:flex;height:100vh}
+.side{width:252px;background:var(--deep);color:#fff;display:flex;flex-direction:column;padding:22px 14px;flex-shrink:0}
+.logo{display:flex;align-items:center;gap:10px;padding:0 10px 28px;font:700 21px 'Bricolage Grotesque',sans-serif}
+.bolt{width:34px;height:34px;border-radius:10px;background:var(--flash);color:var(--deep);display:grid;place-items:center;font-size:20px;transform:rotate(-6deg)}
+.nav{display:flex;flex-direction:column;gap:4px}
+.nav button{display:flex;align-items:center;gap:12px;padding:11px 12px;border:0;border-radius:12px;background:none;color:#B9C2F5;font-weight:500;text-align:left;transition:background .15s}
+.nav button:hover{background:rgba(255,255,255,.09);color:#fff}
+.nav button.on{background:#fff;color:var(--deep);font-weight:600}
+.nav i{font-size:19px}
+.livebadge{margin-left:auto;font:700 12px 'Bricolage Grotesque',sans-serif;background:var(--flash);color:var(--deep);padding:2px 8px;border-radius:99px;font-variant-numeric:tabular-nums}
+.me{margin-top:auto;display:flex;align-items:center;gap:10px;padding:12px;border-radius:14px;background:rgba(255,255,255,.08)}
+.av{width:36px;height:36px;border-radius:50%;background:var(--flash);color:var(--deep);display:grid;place-items:center;font-weight:700;flex-shrink:0}
+.who{min-width:0;flex:1}.who b,.who small{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.who small{color:#B9C2F5;font-size:12px}
+.out{background:none;border:0;color:#B9C2F5;font-size:19px;padding:4px}.out:hover{color:#fff}
+.main{flex:1;overflow-y:auto;padding:34px 44px 56px}
+.head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin-bottom:28px;flex-wrap:wrap}
+.head h1{font-size:34px;line-height:1.1}.head p{margin:6px 0 0;color:var(--muted)}
+.right{display:flex;gap:10px;align-items:center}
+.chip{display:inline-flex;align-items:center;gap:7px;padding:7px 14px;border-radius:99px;background:#fff;border:1px solid var(--line);font-size:13px;font-weight:600;color:var(--muted)}
+.panel{background:#fff;border:1px solid var(--line);border-radius:20px}
+.pad{padding:26px}.sec{font-size:18px;margin:0 0 14px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 20px;border:0;border-radius:12px;font-weight:600;background:var(--ultra);color:#fff;transition:background .15s,transform .15s;white-space:nowrap}
+.btn:hover{background:var(--ultra-2)}.btn:active{transform:translateY(1px)}
+.btn.flash{background:var(--flash);color:var(--deep)}.btn.flash:hover{background:#FFE066}
+.btn.bad{background:var(--bad)}.btn.bad:hover{background:#C92F3F}
+.btn.ghost{background:none;color:var(--ultra);box-shadow:inset 0 0 0 1.5px var(--line)}.btn.ghost:hover{background:#F4F6FE}
+.btn.full{width:100%}.btn[disabled]{background:#E6E9F4;color:#8890AE;cursor:not-allowed}
+.tag{display:inline-flex;align-items:center;gap:6px;padding:3px 11px;border-radius:99px;font-size:12px;font-weight:600}
+.tag.ok{background:#DDF6EC;color:#07704D}.tag.info{background:#E4E8FF;color:#1F31D6}.tag.bad{background:#FDE4E7;color:#B42335}.tag.warn{background:#FFF0CC;color:#8A5700}
+.pulse{width:8px;height:8px;border-radius:50%;background:currentColor;animation:pl 1.6s infinite}
+@keyframes pl{50%{opacity:.3}}
+.slot{display:grid;grid-template-columns:130px 1fr auto;gap:24px;align-items:center;padding:22px 26px;margin-bottom:14px}
+.slot.next{border-left:6px solid var(--ultra)}.slot.later{opacity:.65}
+.slot .t{font:700 26px/1 'Bricolage Grotesque',sans-serif}.slot .t small{display:block;font:500 13px 'Instrument Sans';color:var(--muted);margin-top:7px}
+.slot h3{font-size:21px}.slot p{margin:4px 0 0;color:var(--muted);font-size:14px}
+.session{display:grid;grid-template-columns:minmax(0,1.9fr) minmax(300px,1fr);gap:22px;align-items:start}
+.stage{background:var(--ultra);color:#fff;border-radius:26px;padding:30px;position:relative;overflow:hidden}
+.stage>.ghostbolt{position:absolute;right:-30px;bottom:-50px;font-size:280px;color:#fff;opacity:.06;pointer-events:none}
+.stage .top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;position:relative}
+.stage h2{font-size:22px}
+.stage .tag{background:var(--flash);color:var(--deep)}
+.stagebody{display:flex;gap:34px;align-items:center;flex-wrap:wrap;margin:30px 0 26px;position:relative}
+.timer{display:flex;align-items:center;gap:8px}
+.dg{width:70px;height:100px;border-radius:16px;background:#fff;color:var(--deep);display:grid;place-items:center;font:700 68px/1 'Bricolage Grotesque',sans-serif;position:relative;transition:background .3s}
+.dg::after{content:'';position:absolute;left:0;right:0;top:50%;height:2px;background:rgba(14,26,102,.12)}
+.colon{font:700 54px 'Bricolage Grotesque',sans-serif;color:var(--flash)}
+.timer.low .dg{background:var(--flash)}
+.tnote{color:#C9D0FF;font-size:14px;margin:16px 0 10px;max-width:300px}
+.bar{height:8px;border-radius:9px;background:rgba(255,255,255,.2);overflow:hidden}.bar i{display:block;height:100%;background:var(--flash);border-radius:9px;transition:width .5s linear}
+.ticket{background:#fff;color:var(--ink);border-radius:22px;padding:18px;text-align:center;position:relative;width:min(100%,262px)}
+.ticket svg{width:100%;height:auto;display:block}
+.qrlogo{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:#fff;border-radius:10px;padding:6px;color:var(--ultra);font-size:22px;display:grid}
+.ticket small{display:block;margin-top:12px;color:var(--muted);font-size:12.5px}
+.ticket .bar{background:#E4E8FF;margin-top:8px}.ticket .bar i{background:var(--ultra)}
+.roster{display:flex;flex-direction:column;max-height:calc(100vh - 210px);min-height:360px}
+.rhead{padding:20px 22px 16px;border-bottom:1px solid var(--line)}
+.rhead .row{display:flex;justify-content:space-between;align-items:baseline}
+.rhead b{font:700 26px 'Bricolage Grotesque',sans-serif}.rhead .bar{background:#E4E8FF;margin-top:12px}.rhead .bar i{background:var(--ultra)}
+.rlist{overflow-y:auto;padding:8px;flex:1}
+.ri{display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:12px}
+.ri.new{animation:in .5s}@keyframes in{from{background:#FFF3BF;transform:translateY(-6px)}}
+.ri .av{width:34px;height:34px;background:#E4E8FF;color:var(--ultra);font-size:13px}
+.ri b{display:block;font-size:14px}.ri small{color:var(--muted);font-size:12px}.ri>i{margin-left:auto;color:var(--ok);font-size:20px}
+.empty{display:grid;place-items:center;text-align:center;color:var(--muted);padding:40px 20px;gap:6px;height:100%}.empty i{font-size:38px;color:#A9B1D6}
+.ledger{display:grid;grid-template-columns:repeat(4,1fr);margin-bottom:22px}
+.ledger>div{padding:26px;border-left:1px solid var(--line)}.ledger>div:first-child{border:0}
+.ledger small{color:var(--muted);font-weight:600;font-size:13px}.ledger b{display:block;font:700 44px/1.1 'Bricolage Grotesque',sans-serif;margin:8px 0 6px}
+.ledger span{font-size:13px;color:var(--muted);display:flex;align-items:center;gap:4px}.up{color:var(--ok)!important}.dn{color:var(--bad)!important}
+.chart{display:grid;grid-template-columns:40px 1fr;gap:8px}
+.ylab{display:flex;flex-direction:column;justify-content:space-between;height:260px;font-size:12px;color:var(--muted);text-align:right}
+.bars{height:260px;display:flex;align-items:flex-end;gap:16px;padding:0 10px;background:linear-gradient(var(--line) 1px,transparent 1px) 0 0/100% 25%;border-bottom:1px solid var(--line)}
+.col{flex:1;height:100%;display:flex;align-items:flex-end;position:relative}
+.col i{width:100%;max-width:56px;margin:0 auto;height:0;background:#B9C2FF;border-radius:10px 10px 0 0;transition:height .9s cubic-bezier(.2,.8,.2,1),background .15s;position:relative}
+.col.hi i,.col:hover i{background:var(--ultra)}
+.col em{position:absolute;top:-30px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;font:600 12px 'Instrument Sans';font-style:normal;padding:3px 8px;border-radius:7px;opacity:0;transition:opacity .15s;pointer-events:none}
+.col:hover em,.col.hi em{opacity:1}
+.xlab{display:flex;gap:16px;padding:8px 10px 0 50px;font-size:12px;color:var(--muted)}.xlab span{flex:1;text-align:center}
+.item{display:flex;gap:16px;align-items:flex-start;padding:22px;margin-bottom:14px}
+.ico{width:44px;height:44px;border-radius:13px;display:grid;place-items:center;font-size:22px;flex-shrink:0}
+.ico.bad{background:#FDE4E7;color:var(--bad)}.ico.ok{background:#DDF6EC;color:var(--ok)}.ico.info{background:#E4E8FF;color:var(--ultra)}
+.item h4{font-size:17px;margin-bottom:4px}.item p{margin:0;color:var(--muted);font-size:14.5px;max-width:70ch}
+.center{max-width:460px;margin:40px auto;text-align:center;padding:40px 34px}
+.center>i{font-size:52px;color:var(--ultra)}.center h3{font-size:24px;margin:10px 0 8px}.center p{color:var(--muted);margin:0 0 26px}
+table{width:100%;border-collapse:collapse}th{text-align:left;font-size:13px;color:var(--muted);font-weight:600;padding:14px 24px;background:#F6F8FD;border-bottom:1px solid var(--line)}
+td{padding:18px 24px;border-bottom:1px solid var(--line);font-size:14.5px}tr:last-child td{border:0}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:22px}
+.stats .panel{padding:22px 24px}.stats small{color:var(--muted);font-weight:600;font-size:13px}.stats b{display:block;font:700 40px/1.1 'Bricolage Grotesque',sans-serif;margin-top:6px}
+.notice{display:flex;gap:14px;padding:18px 22px;border-radius:16px;background:#FFF0CC;color:#6B4400;margin-bottom:22px;border-left:6px solid #F2A900}
+.notice i{font-size:24px}.notice p{margin:3px 0 0;font-size:14.5px}
+.scan{max-width:540px;margin:0 auto}.seg{display:inline-flex;background:#EDF0F9;border-radius:12px;padding:4px}
+.seg button{border:0;background:none;padding:8px 14px;border-radius:9px;font-weight:600;font-size:14px;color:var(--muted)}.seg button.on{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(15,21,51,.12)}
+.viewfinder{width:270px;height:270px;margin:26px auto 20px;border-radius:24px;background:var(--deep);display:grid;place-items:center;color:#B9C2F5;text-align:center;position:relative;overflow:hidden;font-size:14px}
+.viewfinder i{font-size:40px;display:block;margin-bottom:6px}
+.viewfinder::before{content:'';position:absolute;inset:26px;border-radius:14px;border:3px solid var(--flash);-webkit-mask:linear-gradient(#000,#000) top/100% 22px no-repeat,linear-gradient(#000,#000) bottom/100% 22px no-repeat;mask:linear-gradient(#000,#000) top/100% 22px no-repeat,linear-gradient(#000,#000) bottom/100% 22px no-repeat}
+.viewfinder.on::after{content:'';position:absolute;left:26px;right:26px;height:3px;background:var(--flash);animation:sweep 1.4s ease-in-out infinite alternate}
+@keyframes sweep{from{top:30px}to{top:238px}}
+.status{min-height:64px;text-align:center}.status b{font-size:18px;display:flex;justify-content:center;align-items:center;gap:8px}.status p{margin:4px 0 0;color:var(--muted);font-size:14px}
+.list>div{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:18px 24px;border-bottom:1px solid var(--line)}.list>div:last-child{border:0}.list small{color:var(--muted);display:block}
+.map{display:flex;justify-content:space-between;align-items:center;padding:18px 20px;border:1px solid var(--line);border-radius:14px;margin-bottom:12px;background:#F6F8FD}.map small{color:var(--muted);display:block}
+.link{border:0;background:none;color:var(--ultra);font-weight:600}.link:hover{text-decoration:underline}
+.scrim{position:fixed;inset:0;background:rgba(14,26,102,.6);display:none;place-items:center;padding:20px;z-index:50}.scrim.on{display:grid}
+.modal{background:#fff;border-radius:26px;max-width:470px;width:100%;padding:32px;animation:pop .2s}@keyframes pop{from{opacity:0;transform:scale(.96)}}
+.modal h3{font-size:26px;text-align:center}.modal .sub{text-align:center;color:var(--muted);margin:4px 0 22px;font-size:14px}
+.kv{display:flex;justify-content:space-between;align-items:center;background:#F6F8FD;border-radius:14px;padding:16px 18px;margin-bottom:10px}.kv b{font:700 26px 'Bricolage Grotesque',sans-serif}
+.note{border-radius:14px;padding:14px 18px;margin-bottom:10px;font-size:14px}.note.bad{background:#FDE4E7;color:#8F1C2B}.note.info{background:#E4E8FF;color:#1B2BB8}.note b{display:block;margin-bottom:2px}
+.login{position:fixed;inset:0;z-index:40;display:grid;grid-template-columns:1.1fr 1fr;background:#fff}
+.l-art{background:var(--ultra);color:#fff;padding:48px 56px;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden}
+.l-art h1{font-size:clamp(40px,5vw,68px);line-height:1;max-width:9ch;position:relative}.l-art p{color:#C9D0FF;max-width:38ch;margin:18px 0 0;font-size:17px;position:relative}
+.l-art .ghostbolt{position:absolute;right:-60px;bottom:-80px;font-size:420px;opacity:.07}
+.l-form{display:grid;place-items:center;padding:32px}.l-form form{width:100%;max-width:380px}.l-form h2{font-size:30px;margin-bottom:24px}
+.l-form label{display:block;font-weight:600;font-size:14px;margin:0 0 6px}.l-form .f{margin-bottom:18px}
+.l-form input,.l-form select{width:100%;padding:12px 14px;border:1.5px solid var(--line);border-radius:12px;background:#fff}.l-form input:focus,.l-form select:focus{outline:none;border-color:var(--ultra);box-shadow:0 0 0 3px #DDE2FF}
+.pick{padding:10px 14px;border:1.5px solid var(--line);border-radius:12px;background:#fff;font-weight:600}
+@media(max-width:1000px){.session{grid-template-columns:1fr}.ledger{grid-template-columns:1fr 1fr}.ledger>div:nth-child(3){border-left:0}.main{padding:26px 22px 48px}.slot{grid-template-columns:1fr}}
+@media(max-width:820px){.side{width:72px;padding:18px 10px}.side .nav span,.side .logo span:last-child,.who,.livebadge{display:none}.logo{padding-bottom:22px;justify-content:center}.nav button{justify-content:center}.me{padding:8px;justify-content:center}.out{display:none}.login{grid-template-columns:1fr}.l-art{display:none}.stats{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--paper);
-            color: var(--text-main);
-            margin: 0;
-            padding: 0;
-            overflow-x: hidden;
-        }
-
-        h1, h2, h3, h4, h5, h6, .brand-font {
-            font-family: 'Space Grotesk', sans-serif;
-        }
-
-        /* Utility classes utilizing CSS Variables */
-        .bg-ink { background-color: var(--ink); }
-        .bg-ink-2 { background-color: var(--ink-2); }
-        .bg-paper { background-color: var(--paper); }
-        .bg-card { background-color: var(--card); }
-        .bg-brand { background-color: var(--brand); }
-        .text-brand { color: var(--brand); }
-        .hover-bg-brand:hover { background-color: var(--brand-hover); }
-        .text-ink { color: var(--ink); }
-        
-        .border-custom { border-color: var(--border); }
-        .card-shadow { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03); }
-
-        /* Chart Animations */
-        .bar-chart-fill {
-            transition: height 1s ease-out;
-        }
-
-        /* Modal Transitions */
-        .modal-enter { opacity: 0; transform: scale(0.95); }
-        .modal-enter-active { opacity: 1; transform: scale(1); transition: opacity 200ms, transform 200ms; }
-    </style>
+.me{position:relative;cursor:pointer;user-select:none}
+.me:hover{background:rgba(255,255,255,.14)}
+.logout-menu{position:absolute;left:0;right:0;bottom:calc(100% + 8px);min-width:170px;background:#fff;border-radius:14px;padding:6px;box-shadow:0 10px 30px rgba(14,26,102,.35);z-index:60;display:none}
+.logout-menu.on{display:block}
+.logout-menu a{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;color:var(--bad);font-weight:600;text-decoration:none;font-size:14px}
+.logout-menu a:hover{background:#FDE4E7}
+</style>
 </head>
-<body class="antialiased h-screen flex flex-col md:flex-row overflow-hidden">
+<body>
+<div class="app" id="app"><aside class="side"><div class="logo"><span class="bolt"><i class="ph-fill ph-lightning"></i></span><span>F.L.A.S.H.</span></div>
+<nav class="nav" id="nav" aria-label="Main"></nav>
+<div class="me"><div class="av" id="uav">U</div><div class="who"><b id="uname"></b><small id="urole"></small></div></div></aside>
+<main class="main" id="main" tabindex="-1"></main></div>
+<div class="scrim" id="scrim" onclick="if(event.target===this)closeModal()"><div class="modal" id="modal" role="dialog" aria-modal="true"></div></div>
+<script>
+const $=s=>document.querySelector(s),VIEWS={};
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const ROLES={
+student:{title:'SHS Student',nav:[['home','Dashboard','ph-squares-four'],['scan','Scan QR / ID','ph-qr-code'],['schedule','My Schedule','ph-calendar-blank'],['history','Attendance History','ph-clock-counter-clockwise']]},
+faculty:{title:'SHS Faculty',nav:[['home','My Classes','ph-chalkboard-teacher'],['session','Live Session','ph-broadcast'],['reports','Class Reports','ph-file-text']]},
+director:{title:'SHS Director',nav:[['home','Executive Portal','ph-chart-pie-slice'],['insights','AI Insights','ph-brain'],['reports','Export Reports','ph-export']]},
+admin:{title:'System Admin',nav:[['home','System Status','ph-activity'],['rbac','Access Control','ph-shield-check'],['maintenance','Maintenance','ph-database']]}};
+let user=null,role=null,view=null;
+const time=()=>new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+setInterval(()=>document.querySelectorAll('.clk span').forEach(e=>e.textContent=time()),1000);
+function head(t,sub,extra=''){return `<header class="head"><div><h1>${t}</h1><p>${sub}</p></div><div class="right">${extra}<span class="chip clk"><i class="ph ph-clock"></i><span>${time()}</span></span></div></header>`}
+function boot(u){user=u;role=u.role;$('#uname').textContent=u.name;$('#urole').textContent=ROLES[role].title;
+$('#uav').textContent=u.name.replace(/^(Prof\.|Dir\.|Dr\.)\s*/,'').charAt(0).toUpperCase();
+$('#nav').innerHTML=ROLES[role].nav.map(([id,l,ic])=>`<button data-v="${id}" onclick="go('${id}')"><i class="ph ${ic}"></i><span>${l}</span>${id==='session'?'<em class="livebadge" id="navlive" hidden></em>':''}</button>`).join('');
+go('home');if(window.tick)tick()}
+function go(v){view=v;document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('on',b.dataset.v===v));
+$('#main').innerHTML=VIEWS[role](v);$('#main').scrollTop=0;if(window.tick)tick()}
+function modal(h){$('#modal').innerHTML=h;$('#scrim').classList.add('on')}
+function closeModal(){$('#scrim').classList.remove('on')}
 
-    <div id="app-container" class="flex h-full w-full">
+/* Live session state lives in localStorage as an absolute end time, so switching
+   tabs (or reloading) never restarts the 30-minute countdown. One global ticker
+   drives it and is never stopped by navigation. */
+const KEY='flash.session.v1',LEN=30*60*1000,CAP=45,TOKEN_MS=30000,COURSE='CS101 - Data Structures';
+const NAMES=['Jane Doe','Alice Johnson','Mark Spencer','David Kim'];
+let mem=null,lastTk=-1;
+const S={get(){try{const r=localStorage.getItem(KEY);return r?JSON.parse(r):null}catch(e){return mem}},
+set(v){mem=v;try{v?localStorage.setItem(KEY,JSON.stringify(v)):localStorage.removeItem(KEY)}catch(e){}}};
+const fmt=s=>String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');
+function startSession(){if(!S.get()){const n=Date.now();S.set({course:COURSE,start:n,end:n+LEN,checkins:[]})}go('session')}
+function qrSvg(seed){let x=(seed>>>0)||1;const r=()=>(x^=x<<13,x^=x>>>17,x^=x<<5,(x>>>0)/4294967296),N=25,c=9;let p='';
+for(let i=0;i<N;i++)for(let j=0;j<N;j++){if((i<8&&j<8)||(i<8&&j>=N-8)||(i>=N-8&&j<8))continue;if(r()>.52)p+=`M${j*c} ${i*c}h${c}v${c}h-${c}z`}
+const f=(i,j)=>`M${j*c} ${i*c}h${7*c}v${7*c}h-${7*c}zM${(j+1)*c} ${(i+1)*c}h${5*c}v${5*c}h-${5*c}zM${(j+2)*c} ${(i+2)*c}h${3*c}v${3*c}h-${3*c}z`;
+return `<svg viewBox="0 0 ${N*c} ${N*c}" role="img" aria-label="Attendance QR code"><path fill="currentColor" fill-rule="evenodd" d="${p+f(0,0)+f(0,N-7)+f(N-7,0)}"/></svg>`}
+const rowHtml=(c,fresh)=>`<div class="ri${fresh?' new':''}"><div class="av">${c.name[0]}</div><div><b>${c.name}${c.name==='David Kim'?' <span class="tag bad">Absence threshold</span>':''}</b><small>Checked in at ${new Date(c.at).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',second:'2-digit'})}</small></div><i class="ph-fill ph-check-circle"></i></div>`;
+function paintRoster(s,fresh){const l=$('#rlist');if(!l)return;
+l.innerHTML=s.checkins.length?[...s.checkins].reverse().map((c,i)=>rowHtml(c,fresh&&!i)).join(''):`<div class="empty"><i class="ph ph-users"></i><p>Waiting for students to check in</p></div>`;
+$('#cnt').textContent=s.checkins.length;$('#cbar').style.width=s.checkins.length/CAP*100+'%'}
+function paintTimer(s,left){const t=$('#timer');if(!t)return;const v=fmt(left).replace(':','');
+t.querySelectorAll('.dg').forEach((e,i)=>e.textContent=v[i]);t.classList.toggle('low',left<=300);
+$('#tbar').style.width=(1-left/(LEN/1000))*100+'%';
+const el=Date.now()-s.start,tk=Math.floor(el/TOKEN_MS);
+if(tk!==lastTk){lastTk=tk;$('#qr').innerHTML=qrSvg(s.start%100000+tk*7919)}
+$('#kbar').style.width=(1-(el%TOKEN_MS)/TOKEN_MS)*100+'%'}
+function tick(){if(role!=='faculty')return;const s=S.get(),nl=$('#navlive');
+if(!s){if(nl)nl.hidden=true;return}
+const left=Math.max(0,Math.ceil((s.end-Date.now())/1000));
+if(nl){nl.hidden=false;nl.textContent=fmt(left)}
+let added=false;
+while(s.checkins.length<NAMES.length){const prev=s.checkins.length?s.checkins[s.checkins.length-1].at:s.start,at=prev+3000;if(at>Date.now())break;s.checkins.push({name:NAMES[s.checkins.length],at});added=true}
+if(added)S.set(s);
+if(view==='session'){paintTimer(s,left);if(added)paintRoster(s,true)}
+if(left<=0)endSession()}
+setInterval(tick,500);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)tick()});
+function endSession(){const s=S.get();S.set(null);lastTk=-1;const nl=$('#navlive');if(nl)nl.hidden=true;
+modal(`<div style="display:grid;place-items:center;margin-bottom:14px"><span class="ico info" style="width:64px;height:64px;font-size:32px;border-radius:50%"><i class="ph ph-brain"></i></span></div>
+<h3>AI Session Summary</h3><p class="sub">Session ended for ${s?s.course:COURSE}</p>
+<div class="kv"><span>Attendance rate</span><b>92%</b></div>
+<div class="note bad"><b>Threshold alerts (1)</b>David Kim has reached the maximum allowed absences.</div>
+<div class="note info"><b>AI insight</b>Attendance improved by 5% compared to last week. Most students checked in via the mobile app (onsite).</div>
+<button class="btn full" style="margin-top:14px" onclick="closeModal();go('home')">Back to My Classes</button>`);
+if(view==='session')go('session')}
+VIEWS.faculty=v=>{const s=S.get();
+if(v==='home')return head('My Classes','Start a session to open check-in for your students.')+`
+<h2 class="sec">Today</h2>
+<div class="panel slot next"><div class="t">08:00<small>to 09:30</small></div><div><h3>${COURSE}</h3><p>Room 304 &middot; 45 students enrolled</p></div>
+<button class="btn flash" onclick="startSession()"><i class="ph-bold ph-${s?'broadcast':'play'}"></i>${s?'Resume session':'Start session'}</button></div>
+<div class="panel slot later"><div class="t">14:00<small>to 15:30</small></div><div><h3>CS102 - Algorithms</h3><p>Room 305 &middot; 38 students enrolled</p></div><button class="btn" disabled>Upcoming</button></div>`;
+if(v==='session'){if(!s)return head('Live Session','No session is running.')+`<div class="panel center"><i class="ph ph-broadcast"></i><h3>No active session</h3><p>Start a class session from My Classes to generate the check-in QR.</p><button class="btn" onclick="go('home')">Go to My Classes</button></div>`;
+setTimeout(()=>{lastTk=-1;paintRoster(s);tick()},0);
+return head('Live Session',`${s.course} &middot; Room 304`,'<span class="tag ok"><span class="pulse"></span>Live</span>')+`
+<div class="session"><section class="stage"><i class="ph-fill ph-lightning ghostbolt"></i>
+<div class="top"><h2>Check-in is open</h2><span class="tag">Closes automatically</span></div>
+<div class="stagebody"><div><div class="timer" id="timer" role="timer" aria-label="Time remaining"><span class="dg">3</span><span class="dg">0</span><span class="colon">:</span><span class="dg">0</span><span class="dg">0</span></div>
+<p class="tnote">The timer keeps running while you visit other tabs.</p><div class="bar"><i id="tbar"></i></div></div>
+<div class="ticket"><div style="position:relative"><div id="qr"></div><span class="qrlogo"><i class="ph-fill ph-lightning"></i></span></div><small>New code every 30 seconds</small><div class="bar"><i id="kbar"></i></div></div></div>
+<button class="btn bad" style="position:relative" onclick="endSession()"><i class="ph-bold ph-stop-circle"></i>End session now</button></section>
+<aside class="panel roster"><div class="rhead"><div class="row"><h3>Live roster</h3><span><b id="cnt">0</b> / ${CAP}</span></div><div class="bar"><i id="cbar" style="width:0"></i></div></div><div class="rlist" id="rlist"></div></aside></div>`}
+if(v==='reports')return head('Class Reports','Past attendance for your classes.')+`<div class="panel" style="overflow:hidden"><table><thead><tr><th>Date</th><th>Class</th><th>Present</th><th>Late</th></tr></thead><tbody>
+<tr><td>Sept 28, 2026</td><td>CS101 - Data Structures</td><td>42 / 45</td><td>3</td></tr>
+<tr><td>Sept 25, 2026</td><td>CS101 - Data Structures</td><td>41 / 45</td><td>2</td></tr>
+<tr><td>Sept 24, 2026</td><td>CS102 - Algorithms</td><td>36 / 38</td><td>1</td></tr></tbody></table></div>`};
 
-        <!-- Sidebar -->
-        <aside class="w-64 bg-ink text-white flex flex-col h-full flex-shrink-0 transition-transform duration-300">
-            <div class="p-6 flex items-center gap-3">
-                <i class="ph-fill ph-lightning text-brand text-2xl"></i>
-                <span class="text-xl font-bold brand-font tracking-wide">F.L.A.S.H.</span>
-            </div>
-
-            <div class="px-6 py-2">
-                <div class="text-xs uppercase text-gray-400 font-semibold tracking-wider mb-2">Navigation</div>
-                <nav id="sidebar-nav" class="space-y-1">
-                    <!-- Dynamic links injected here -->
-                </nav>
-            </div>
-
-            <div class="mt-auto p-6 bg-ink-2 flex items-center justify-between">
-                <div class="flex items-center gap-3 overflow-hidden">
-                    <div class="w-8 h-8 rounded-full bg-brand flex items-center justify-center text-sm font-bold flex-shrink-0" id="user-initial">U</div>
-                    <div class="truncate">
-                        <div class="text-sm font-medium truncate" id="display-name">User Name</div>
-                        <div class="text-xs text-gray-400" id="display-role">Role</div>
-                    </div>
-                </div>
-            </div>
-        </aside>
-
-        <!-- Main Content Area -->
-        <main class="flex-1 flex flex-col h-full overflow-hidden bg-paper">
-            <header class="bg-card border-b border-custom px-8 py-4 flex items-center justify-between flex-shrink-0">
-                <h2 class="text-xl font-semibold brand-font text-ink capitalize" id="current-view-title">Dashboard</h2>
-                <div class="flex items-center gap-4">
-                    <div class="hidden md:flex items-center gap-2 text-sm text-text-muted bg-paper px-3 py-1.5 rounded-full border border-custom">
-                        <i class="ph ph-clock"></i>
-                        <span id="current-time">00:00 AM</span>
-                    </div>
-                </div>
-            </header>
-
-            <div id="view-container" class="flex-1 overflow-y-auto p-8 relative">
-                <!-- Content injected here via JS -->
-            </div>
-        </main>
-    </div>
-
-    <!-- Global Modal Overlay -->
-    <div id="global-modal" class="fixed inset-0 bg-ink/50 backdrop-blur-sm z-[100] hidden items-center justify-center p-4">
-        <div id="modal-content" class="bg-card w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden border border-custom">
-            <!-- Modal inner content injected here -->
-        </div>
-    </div>
-
-    <script>
-        // Fixed user for this dashboard (no login page)
-        const currentUser = { name: 'Prof. Maria Santos', role: 'SHS Professor' };
-        let activeTimer = null;
-        let mockRosterInterval = null;
-
-        const navLinks = [
-                { id: 'home', label: 'My Classes', icon: 'ph-chalkboard-teacher' },
-                { id: 'session', label: 'Live Session', icon: 'ph-broadcast' },
-                { id: 'reports', label: 'Class Reports', icon: 'ph-file-text' }
-            ];
-
-        // DOM Elements
-        const sidebarNav = document.getElementById('sidebar-nav');
-        const viewContainer = document.getElementById('view-container');
-        const currentViewTitle = document.getElementById('current-view-title');
-        const globalModal = document.getElementById('global-modal');
-        const modalContent = document.getElementById('modal-content');
-
-        // Clock
-        function updateClock() {
-            const now = new Date();
-            document.getElementById('current-time').innerText = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-        }
-        updateClock();
-        setInterval(updateClock, 1000);
-
-        // Profile block
-        document.getElementById('display-name').innerText = currentUser.name;
-        document.getElementById('display-role').innerText = currentUser.role;
-        document.getElementById('user-initial').innerText = currentUser.name.replace(/^(Prof\.|Dir\.)\s*/, '').charAt(0).toUpperCase();
-
-        function renderSidebar() {
-            sidebarNav.innerHTML = navLinks.map(link => `
-                <button onclick="switchView('${link.id}')" id="nav-${link.id}" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors text-gray-400 hover:text-white hover:bg-ink-2">
-                    <i class="ph ${link.icon} text-lg"></i>
-                    ${link.label}
-                </button>
-            `).join('');
-        }
-
-        function switchView(viewId) {
-            const links = sidebarNav.querySelectorAll('button');
-            links.forEach(l => {
-                l.classList.remove('bg-brand', 'text-white');
-                l.classList.add('text-gray-400');
-            });
-            const activeLink = document.getElementById(`nav-${viewId}`);
-            if (activeLink) {
-                activeLink.classList.remove('text-gray-400', 'hover:bg-ink-2');
-                activeLink.classList.add('bg-brand', 'text-white');
-                currentViewTitle.innerText = activeLink.innerText.trim();
-            }
-
-            clearTimers();
-            viewContainer.innerHTML = '';
-            renderView(viewId);
-        }
-
-        function clearTimers() {
-            if(activeTimer) clearInterval(activeTimer);
-            if(mockRosterInterval) clearInterval(mockRosterInterval);
-        }
-
-        function showModal(contentHTML) {
-            modalContent.innerHTML = contentHTML;
-            globalModal.classList.remove('hidden');
-            globalModal.classList.add('flex');
-        }
-
-        function closeModal() {
-            globalModal.classList.add('hidden');
-            globalModal.classList.remove('flex');
-        }
-
-        function renderView(viewId) {
-            let html = '';
-            if (viewId === 'home') {
-                html = `
-                    <div class="mb-8">
-                        <h3 class="text-2xl font-bold text-ink brand-font">Professor Portal</h3>
-                        <p class="text-text-muted">Manage your classes and monitor attendance.</p>
-                    </div>
-
-                    <h4 class="font-semibold text-ink mb-4">Today's Schedule</h4>
-                    <div class="space-y-4">
-                        <div class="bg-card p-6 rounded-xl border-l-4 border-l-brand border border-custom card-shadow flex flex-col md:flex-row items-center justify-between gap-4">
-                            <div>
-                                <div class="text-sm text-text-muted mb-1"><i class="ph ph-clock mr-1"></i> 08:00 AM - 09:30 AM</div>
-                                <h4 class="text-xl font-bold text-ink brand-font">CS101 - Data Structures</h4>
-                                <div class="text-sm text-text-muted mt-1">Room 304 • 45 Students Enrolled</div>
-                            </div>
-                            <button onclick="switchView('session')" class="bg-brand hover-bg-brand text-white px-6 py-2.5 rounded-lg font-medium transition-colors shadow-md shadow-brand/30 whitespace-nowrap">
-                                Start Session
-                            </button>
-                        </div>
-
-                        <div class="bg-card p-6 rounded-xl border border-custom opacity-70 flex flex-col md:flex-row items-center justify-between gap-4">
-                            <div>
-                                <div class="text-sm text-text-muted mb-1"><i class="ph ph-clock mr-1"></i> 02:00 PM - 03:30 PM</div>
-                                <h4 class="text-xl font-bold text-ink brand-font">CS102 - Algorithms</h4>
-                                <div class="text-sm text-text-muted mt-1">Room 305 • 38 Students Enrolled</div>
-                            </div>
-                            <button disabled class="bg-gray-200 text-gray-500 px-6 py-2.5 rounded-lg font-medium cursor-not-allowed whitespace-nowrap">
-                                Upcoming
-                            </button>
-                        </div>
-                    </div>
-                `;
-            } else if (viewId === 'session') {
-                html = `
-                    <div class="flex flex-col lg:flex-row gap-6 h-full pb-10">
-                        <!-- Left Panel: QR Code and Timer -->
-                        <div class="lg:w-2/3 bg-card rounded-xl border border-custom card-shadow flex flex-col items-center justify-center p-10 relative">
-                            <div class="absolute top-6 left-6 text-ink font-bold brand-font text-xl">CS101 Active Session</div>
-                            
-                            <div class="text-6xl font-bold font-mono text-brand mb-8" id="session-timer">30:00</div>
-                            
-                            <!-- Mock QR Code Box -->
-                            <div class="bg-white p-4 rounded-xl border-4 border-ink shadow-lg mb-8 relative">
-                                <svg width="256" height="256" viewBox="0 0 256 256" class="fill-current text-ink">
-                                    <path d="M48,48h56v56H48V48z M48,152h56v56H48V152z M152,48h56v56h-56V48z M112,120H40v-8h72V120z M216,120h-72v-8h72V120z M112,216H40v-8h72V216z M216,216h-72v-8h72V216z"/>
-                                    <!-- Inner patterns mocked for visual effect -->
-                                    <rect x="64" y="64" width="24" height="24" />
-                                    <rect x="64" y="168" width="24" height="24" />
-                                    <rect x="168" y="64" width="24" height="24" />
-                                    <path d="M136,136h16v16h-16V136z M168,136h16v16h-16V136z M136,168h16v16h-16V168z M184,184h16v16h-16V184z M152,152h16v16h-16V152z"/>
-                                </svg>
-                                <div class="absolute inset-0 flex items-center justify-center">
-                                    <div class="bg-white p-2 rounded-lg shadow-sm border border-gray-200">
-                                        <i class="ph-fill ph-lightning text-brand text-2xl"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <p class="text-text-muted mb-8 text-center max-w-sm">Students can scan this Dynamic QR Token to record attendance. Token refreshes automatically.</p>
-                            
-                            <button onclick="endClassSession()" class="bg-danger hover:bg-red-600 text-white px-8 py-3 rounded-xl font-bold transition-colors w-full max-w-sm flex items-center justify-center gap-2">
-                                <i class="ph ph-stop-circle text-xl"></i> End Session Manually
-                            </button>
-                        </div>
-
-                        <!-- Right Panel: Live Roster -->
-                        <div class="lg:w-1/3 bg-card rounded-xl border border-custom card-shadow flex flex-col overflow-hidden">
-                            <div class="p-5 border-b border-custom bg-paper flex items-center justify-between">
-                                <h3 class="font-bold text-ink brand-font">Live Roster</h3>
-                                <span class="bg-brand/10 text-brand px-3 py-1 rounded-full text-xs font-bold" id="attendance-count">0 / 45</span>
-                            </div>
-                            <div class="flex-1 overflow-y-auto p-2" id="live-roster-list">
-                                <!-- Student items added via JS -->
-                                <div class="flex flex-col items-center justify-center h-full text-gray-400 p-8 text-center" id="empty-roster">
-                                    <i class="ph ph-users text-4xl mb-2"></i>
-                                    <p class="text-sm">Waiting for students to check-in...</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                setTimeout(initLiveSession, 100);
-            } else if (viewId === 'reports') {
-                html = `
-                    <div class="bg-card p-8 rounded-xl border border-custom card-shadow text-center text-text-muted">
-                        <i class="ph ph-file-text text-5xl mb-4"></i>
-                        <h3 class="text-xl font-bold text-ink brand-font">Class Reports</h3>
-                        <p class="mt-2">Generate and view past attendance reports here.</p>
-                    </div>
-                `;
-            }
-            viewContainer.innerHTML = html;
-        }
-
-        // Professor Live Session Logic
-        window.initLiveSession = function() {
-            // Timer Logic (Mocked 30 mins)
-            let time = 30 * 60;
-            const timerEl = document.getElementById('session-timer');
-            
-            activeTimer = setInterval(() => {
-                time--;
-                if(time <= 0) {
-                    clearInterval(activeTimer);
-                    endClassSession();
-                }
-                const m = Math.floor(time / 60).toString().padStart(2, '0');
-                const s = (time % 60).toString().padStart(2, '0');
-                timerEl.innerText = `${m}:${s}`;
-            }, 1000);
-
-            // Live Roster Logic (Mock students appearing)
-            const listEl = document.getElementById('live-roster-list');
-            const countEl = document.getElementById('attendance-count');
-            const emptyEl = document.getElementById('empty-roster');
-            let count = 0;
-            const mockNames = ['Jane Doe', 'Alice Johnson', 'Mark Spencer', 'David Kim'];
-            
-            mockRosterInterval = setInterval(() => {
-                if(count < mockNames.length) {
-                    if(emptyEl) emptyEl.style.display = 'none';
-                    const name = mockNames[count];
-                    
-                    const el = document.createElement('div');
-                    el.className = 'p-3 flex items-center justify-between border-b border-gray-100 animate-[fadeIn_0.5s_ease-out]';
-                    // Inline keyframes for standard tailwind fallback
-                    el.style.animation = 'fadeIn 0.5s ease-out';
-                    
-                    const timeStr = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', second:'2-digit'});
-                    
-                    // Add mock threshold warning for 'David Kim'
-                    let warningTag = '';
-                    if(name === 'David Kim') {
-                        warningTag = '<span class="text-xs text-danger font-medium bg-red-50 px-2 py-0.5 rounded-full ml-2">Absence Threshold</span>';
-                    }
-
-                    el.innerHTML = `
-                        <div class="flex items-center gap-3">
-                            <div class="w-8 h-8 rounded-full bg-brand/20 text-brand flex items-center justify-center font-bold text-xs">${name.charAt(0)}</div>
-                            <div>
-                                <div class="text-sm font-semibold text-ink">${name} ${warningTag}</div>
-                                <div class="text-xs text-text-muted">Checked in at ${timeStr}</div>
-                            </div>
-                        </div>
-                        <i class="ph-fill ph-check-circle text-success text-xl"></i>
-                    `;
-                    listEl.insertBefore(el, listEl.firstChild);
-                    count++;
-                    countEl.innerText = `${count} / 45`;
-                }
-            }, 3000);
-        };
-
-        // Professor AI Summary Modal
-        window.endClassSession = function() {
-            clearTimers();
-            
-            const summaryHTML = `
-                <div class="p-8">
-                    <div class="flex items-center justify-center mb-6">
-                        <div class="bg-brand/10 p-4 rounded-full text-brand">
-                            <i class="ph ph-brain text-4xl"></i>
-                        </div>
-                    </div>
-                    <h3 class="text-2xl font-bold text-center text-ink brand-font mb-2">AI Session Summary</h3>
-                    <p class="text-center text-text-muted mb-8 text-sm">Session ended for CS101 - Data Structures</p>
-
-                    <div class="space-y-4 mb-8">
-                        <div class="bg-paper p-4 rounded-lg border border-custom flex justify-between items-center">
-                            <span class="text-sm font-medium text-text-muted">Attendance Rate</span>
-                            <span class="font-bold text-ink text-lg">92%</span>
-                        </div>
-                        <div class="bg-red-50 p-4 rounded-lg border border-red-100 text-sm">
-                            <strong class="text-red-700 block mb-1">Threshold Alerts (1)</strong>
-                            <p class="text-red-600">David Kim has reached the maximum allowed absences.</p>
-                        </div>
-                        <div class="bg-blue-50 p-4 rounded-lg border border-blue-100 text-sm">
-                            <strong class="text-brand block mb-1">AI Insight</strong>
-                            <p class="text-blue-800">Attendance improved by 5% compared to last week. Most students checked in via Mobile App (Onsite).</p>
-                        </div>
-                    </div>
-
-                    <button onclick="closeModal(); switchView('home')" class="w-full bg-ink text-white py-3 rounded-lg font-semibold hover:bg-ink-2 transition-colors">
-                        Return to Dashboard
-                    </button>
-                </div>
-            `;
-            showModal(summaryHTML);
-        };
-
-        // Initialize inline keyframes for UI animations
-        const style = document.createElement('style');
-        style.innerHTML = `
-            @keyframes fadeIn {
-                from { opacity: 0; transform: translateY(10px); }
-                to { opacity: 1; transform: translateY(0); }
-            }
-        `;
-        document.head.appendChild(style);
-
-        // Boot
-        renderSidebar();
-        switchView('home');
-
-    </script>
+boot({name:'Prof. Maria Santos',role:'faculty'});
+</script>
+<script>
+(function(){var me=document.querySelector('.me');if(!me)return;
+me.setAttribute('role','button');me.setAttribute('tabindex','0');me.setAttribute('aria-haspopup','true');me.setAttribute('aria-expanded','false');
+var m=document.createElement('div');m.className='logout-menu';m.innerHTML='<a href="index.html"><i class="ph ph-sign-out"></i>Log out</a>';me.appendChild(m);
+function t(o){var s=o===undefined?!m.classList.contains('on'):o;m.classList.toggle('on',s);me.setAttribute('aria-expanded',s)}
+me.addEventListener('click',function(e){if(e.target.closest('.logout-menu'))return;t()});
+me.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){if(e.target.closest('.logout-menu'))return;e.preventDefault();t()}if(e.key==='Escape')t(false)});
+document.addEventListener('click',function(e){if(!me.contains(e.target))t(false)});
+})();
+</script>
 </body>
 </html>

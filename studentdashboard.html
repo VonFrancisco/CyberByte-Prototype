@@ -1,394 +1,214 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>F.L.A.S.H. - SHS Student Dashboard</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
-    
-    <style>
-        :root {
-            --brand: #3D5AFE;
-            --brand-hover: #3249cf;
-            --ink: #0B1120;
-            --ink-2: #1E293B;
-            --paper: #F8FAFC;
-            --card: #FFFFFF;
-            --text-main: #334155;
-            --text-muted: #64748B;
-            --danger: #EF4444;
-            --success: #10B981;
-            --warning: #F59E0B;
-            --border: #E2E8F0;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>F.L.A.S.H. - SHS Student Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css">
+<style>
+:root{--ultra:#2A3FFF;--ultra-2:#1F31D6;--deep:#0E1A66;--flash:#FFD426;--canvas:#EDF0F9;--line:#DCE1F1;--ink:#0F1533;--muted:#5B6386;--ok:#0E9F6E;--bad:#E03E4E;--warn:#B87400}
+*{box-sizing:border-box}[hidden]{display:none!important}
+html,body{height:100%;margin:0}
+body{font:15px/1.5 'Instrument Sans',system-ui,sans-serif;color:var(--ink);background:var(--canvas);-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4,.d{font-family:'Bricolage Grotesque','Instrument Sans',sans-serif;letter-spacing:-.02em;margin:0}
+button,input,select{font:inherit}button{cursor:pointer}
+:focus-visible{outline:3px solid var(--ultra);outline-offset:2px}.side :focus-visible{outline-color:var(--flash)}
+.app{display:flex;height:100vh}
+.side{width:252px;background:var(--deep);color:#fff;display:flex;flex-direction:column;padding:22px 14px;flex-shrink:0}
+.logo{display:flex;align-items:center;gap:10px;padding:0 10px 28px;font:700 21px 'Bricolage Grotesque',sans-serif}
+.bolt{width:34px;height:34px;border-radius:10px;background:var(--flash);color:var(--deep);display:grid;place-items:center;font-size:20px;transform:rotate(-6deg)}
+.nav{display:flex;flex-direction:column;gap:4px}
+.nav button{display:flex;align-items:center;gap:12px;padding:11px 12px;border:0;border-radius:12px;background:none;color:#B9C2F5;font-weight:500;text-align:left;transition:background .15s}
+.nav button:hover{background:rgba(255,255,255,.09);color:#fff}
+.nav button.on{background:#fff;color:var(--deep);font-weight:600}
+.nav i{font-size:19px}
+.livebadge{margin-left:auto;font:700 12px 'Bricolage Grotesque',sans-serif;background:var(--flash);color:var(--deep);padding:2px 8px;border-radius:99px;font-variant-numeric:tabular-nums}
+.me{margin-top:auto;display:flex;align-items:center;gap:10px;padding:12px;border-radius:14px;background:rgba(255,255,255,.08)}
+.av{width:36px;height:36px;border-radius:50%;background:var(--flash);color:var(--deep);display:grid;place-items:center;font-weight:700;flex-shrink:0}
+.who{min-width:0;flex:1}.who b,.who small{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.who small{color:#B9C2F5;font-size:12px}
+.out{background:none;border:0;color:#B9C2F5;font-size:19px;padding:4px}.out:hover{color:#fff}
+.main{flex:1;overflow-y:auto;padding:34px 44px 56px}
+.head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin-bottom:28px;flex-wrap:wrap}
+.head h1{font-size:34px;line-height:1.1}.head p{margin:6px 0 0;color:var(--muted)}
+.right{display:flex;gap:10px;align-items:center}
+.chip{display:inline-flex;align-items:center;gap:7px;padding:7px 14px;border-radius:99px;background:#fff;border:1px solid var(--line);font-size:13px;font-weight:600;color:var(--muted)}
+.panel{background:#fff;border:1px solid var(--line);border-radius:20px}
+.pad{padding:26px}.sec{font-size:18px;margin:0 0 14px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 20px;border:0;border-radius:12px;font-weight:600;background:var(--ultra);color:#fff;transition:background .15s,transform .15s;white-space:nowrap}
+.btn:hover{background:var(--ultra-2)}.btn:active{transform:translateY(1px)}
+.btn.flash{background:var(--flash);color:var(--deep)}.btn.flash:hover{background:#FFE066}
+.btn.bad{background:var(--bad)}.btn.bad:hover{background:#C92F3F}
+.btn.ghost{background:none;color:var(--ultra);box-shadow:inset 0 0 0 1.5px var(--line)}.btn.ghost:hover{background:#F4F6FE}
+.btn.full{width:100%}.btn[disabled]{background:#E6E9F4;color:#8890AE;cursor:not-allowed}
+.tag{display:inline-flex;align-items:center;gap:6px;padding:3px 11px;border-radius:99px;font-size:12px;font-weight:600}
+.tag.ok{background:#DDF6EC;color:#07704D}.tag.info{background:#E4E8FF;color:#1F31D6}.tag.bad{background:#FDE4E7;color:#B42335}.tag.warn{background:#FFF0CC;color:#8A5700}
+.pulse{width:8px;height:8px;border-radius:50%;background:currentColor;animation:pl 1.6s infinite}
+@keyframes pl{50%{opacity:.3}}
+.slot{display:grid;grid-template-columns:130px 1fr auto;gap:24px;align-items:center;padding:22px 26px;margin-bottom:14px}
+.slot.next{border-left:6px solid var(--ultra)}.slot.later{opacity:.65}
+.slot .t{font:700 26px/1 'Bricolage Grotesque',sans-serif}.slot .t small{display:block;font:500 13px 'Instrument Sans';color:var(--muted);margin-top:7px}
+.slot h3{font-size:21px}.slot p{margin:4px 0 0;color:var(--muted);font-size:14px}
+.session{display:grid;grid-template-columns:minmax(0,1.9fr) minmax(300px,1fr);gap:22px;align-items:start}
+.stage{background:var(--ultra);color:#fff;border-radius:26px;padding:30px;position:relative;overflow:hidden}
+.stage>.ghostbolt{position:absolute;right:-30px;bottom:-50px;font-size:280px;color:#fff;opacity:.06;pointer-events:none}
+.stage .top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;position:relative}
+.stage h2{font-size:22px}
+.stage .tag{background:var(--flash);color:var(--deep)}
+.stagebody{display:flex;gap:34px;align-items:center;flex-wrap:wrap;margin:30px 0 26px;position:relative}
+.timer{display:flex;align-items:center;gap:8px}
+.dg{width:70px;height:100px;border-radius:16px;background:#fff;color:var(--deep);display:grid;place-items:center;font:700 68px/1 'Bricolage Grotesque',sans-serif;position:relative;transition:background .3s}
+.dg::after{content:'';position:absolute;left:0;right:0;top:50%;height:2px;background:rgba(14,26,102,.12)}
+.colon{font:700 54px 'Bricolage Grotesque',sans-serif;color:var(--flash)}
+.timer.low .dg{background:var(--flash)}
+.tnote{color:#C9D0FF;font-size:14px;margin:16px 0 10px;max-width:300px}
+.bar{height:8px;border-radius:9px;background:rgba(255,255,255,.2);overflow:hidden}.bar i{display:block;height:100%;background:var(--flash);border-radius:9px;transition:width .5s linear}
+.ticket{background:#fff;color:var(--ink);border-radius:22px;padding:18px;text-align:center;position:relative;width:min(100%,262px)}
+.ticket svg{width:100%;height:auto;display:block}
+.qrlogo{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:#fff;border-radius:10px;padding:6px;color:var(--ultra);font-size:22px;display:grid}
+.ticket small{display:block;margin-top:12px;color:var(--muted);font-size:12.5px}
+.ticket .bar{background:#E4E8FF;margin-top:8px}.ticket .bar i{background:var(--ultra)}
+.roster{display:flex;flex-direction:column;max-height:calc(100vh - 210px);min-height:360px}
+.rhead{padding:20px 22px 16px;border-bottom:1px solid var(--line)}
+.rhead .row{display:flex;justify-content:space-between;align-items:baseline}
+.rhead b{font:700 26px 'Bricolage Grotesque',sans-serif}.rhead .bar{background:#E4E8FF;margin-top:12px}.rhead .bar i{background:var(--ultra)}
+.rlist{overflow-y:auto;padding:8px;flex:1}
+.ri{display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:12px}
+.ri.new{animation:in .5s}@keyframes in{from{background:#FFF3BF;transform:translateY(-6px)}}
+.ri .av{width:34px;height:34px;background:#E4E8FF;color:var(--ultra);font-size:13px}
+.ri b{display:block;font-size:14px}.ri small{color:var(--muted);font-size:12px}.ri>i{margin-left:auto;color:var(--ok);font-size:20px}
+.empty{display:grid;place-items:center;text-align:center;color:var(--muted);padding:40px 20px;gap:6px;height:100%}.empty i{font-size:38px;color:#A9B1D6}
+.ledger{display:grid;grid-template-columns:repeat(4,1fr);margin-bottom:22px}
+.ledger>div{padding:26px;border-left:1px solid var(--line)}.ledger>div:first-child{border:0}
+.ledger small{color:var(--muted);font-weight:600;font-size:13px}.ledger b{display:block;font:700 44px/1.1 'Bricolage Grotesque',sans-serif;margin:8px 0 6px}
+.ledger span{font-size:13px;color:var(--muted);display:flex;align-items:center;gap:4px}.up{color:var(--ok)!important}.dn{color:var(--bad)!important}
+.chart{display:grid;grid-template-columns:40px 1fr;gap:8px}
+.ylab{display:flex;flex-direction:column;justify-content:space-between;height:260px;font-size:12px;color:var(--muted);text-align:right}
+.bars{height:260px;display:flex;align-items:flex-end;gap:16px;padding:0 10px;background:linear-gradient(var(--line) 1px,transparent 1px) 0 0/100% 25%;border-bottom:1px solid var(--line)}
+.col{flex:1;height:100%;display:flex;align-items:flex-end;position:relative}
+.col i{width:100%;max-width:56px;margin:0 auto;height:0;background:#B9C2FF;border-radius:10px 10px 0 0;transition:height .9s cubic-bezier(.2,.8,.2,1),background .15s;position:relative}
+.col.hi i,.col:hover i{background:var(--ultra)}
+.col em{position:absolute;top:-30px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;font:600 12px 'Instrument Sans';font-style:normal;padding:3px 8px;border-radius:7px;opacity:0;transition:opacity .15s;pointer-events:none}
+.col:hover em,.col.hi em{opacity:1}
+.xlab{display:flex;gap:16px;padding:8px 10px 0 50px;font-size:12px;color:var(--muted)}.xlab span{flex:1;text-align:center}
+.item{display:flex;gap:16px;align-items:flex-start;padding:22px;margin-bottom:14px}
+.ico{width:44px;height:44px;border-radius:13px;display:grid;place-items:center;font-size:22px;flex-shrink:0}
+.ico.bad{background:#FDE4E7;color:var(--bad)}.ico.ok{background:#DDF6EC;color:var(--ok)}.ico.info{background:#E4E8FF;color:var(--ultra)}
+.item h4{font-size:17px;margin-bottom:4px}.item p{margin:0;color:var(--muted);font-size:14.5px;max-width:70ch}
+.center{max-width:460px;margin:40px auto;text-align:center;padding:40px 34px}
+.center>i{font-size:52px;color:var(--ultra)}.center h3{font-size:24px;margin:10px 0 8px}.center p{color:var(--muted);margin:0 0 26px}
+table{width:100%;border-collapse:collapse}th{text-align:left;font-size:13px;color:var(--muted);font-weight:600;padding:14px 24px;background:#F6F8FD;border-bottom:1px solid var(--line)}
+td{padding:18px 24px;border-bottom:1px solid var(--line);font-size:14.5px}tr:last-child td{border:0}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:22px}
+.stats .panel{padding:22px 24px}.stats small{color:var(--muted);font-weight:600;font-size:13px}.stats b{display:block;font:700 40px/1.1 'Bricolage Grotesque',sans-serif;margin-top:6px}
+.notice{display:flex;gap:14px;padding:18px 22px;border-radius:16px;background:#FFF0CC;color:#6B4400;margin-bottom:22px;border-left:6px solid #F2A900}
+.notice i{font-size:24px}.notice p{margin:3px 0 0;font-size:14.5px}
+.scan{max-width:540px;margin:0 auto}.seg{display:inline-flex;background:#EDF0F9;border-radius:12px;padding:4px}
+.seg button{border:0;background:none;padding:8px 14px;border-radius:9px;font-weight:600;font-size:14px;color:var(--muted)}.seg button.on{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(15,21,51,.12)}
+.viewfinder{width:270px;height:270px;margin:26px auto 20px;border-radius:24px;background:var(--deep);display:grid;place-items:center;color:#B9C2F5;text-align:center;position:relative;overflow:hidden;font-size:14px}
+.viewfinder i{font-size:40px;display:block;margin-bottom:6px}
+.viewfinder::before{content:'';position:absolute;inset:26px;border-radius:14px;border:3px solid var(--flash);-webkit-mask:linear-gradient(#000,#000) top/100% 22px no-repeat,linear-gradient(#000,#000) bottom/100% 22px no-repeat;mask:linear-gradient(#000,#000) top/100% 22px no-repeat,linear-gradient(#000,#000) bottom/100% 22px no-repeat}
+.viewfinder.on::after{content:'';position:absolute;left:26px;right:26px;height:3px;background:var(--flash);animation:sweep 1.4s ease-in-out infinite alternate}
+@keyframes sweep{from{top:30px}to{top:238px}}
+.status{min-height:64px;text-align:center}.status b{font-size:18px;display:flex;justify-content:center;align-items:center;gap:8px}.status p{margin:4px 0 0;color:var(--muted);font-size:14px}
+.list>div{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:18px 24px;border-bottom:1px solid var(--line)}.list>div:last-child{border:0}.list small{color:var(--muted);display:block}
+.map{display:flex;justify-content:space-between;align-items:center;padding:18px 20px;border:1px solid var(--line);border-radius:14px;margin-bottom:12px;background:#F6F8FD}.map small{color:var(--muted);display:block}
+.link{border:0;background:none;color:var(--ultra);font-weight:600}.link:hover{text-decoration:underline}
+.scrim{position:fixed;inset:0;background:rgba(14,26,102,.6);display:none;place-items:center;padding:20px;z-index:50}.scrim.on{display:grid}
+.modal{background:#fff;border-radius:26px;max-width:470px;width:100%;padding:32px;animation:pop .2s}@keyframes pop{from{opacity:0;transform:scale(.96)}}
+.modal h3{font-size:26px;text-align:center}.modal .sub{text-align:center;color:var(--muted);margin:4px 0 22px;font-size:14px}
+.kv{display:flex;justify-content:space-between;align-items:center;background:#F6F8FD;border-radius:14px;padding:16px 18px;margin-bottom:10px}.kv b{font:700 26px 'Bricolage Grotesque',sans-serif}
+.note{border-radius:14px;padding:14px 18px;margin-bottom:10px;font-size:14px}.note.bad{background:#FDE4E7;color:#8F1C2B}.note.info{background:#E4E8FF;color:#1B2BB8}.note b{display:block;margin-bottom:2px}
+.login{position:fixed;inset:0;z-index:40;display:grid;grid-template-columns:1.1fr 1fr;background:#fff}
+.l-art{background:var(--ultra);color:#fff;padding:48px 56px;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden}
+.l-art h1{font-size:clamp(40px,5vw,68px);line-height:1;max-width:9ch;position:relative}.l-art p{color:#C9D0FF;max-width:38ch;margin:18px 0 0;font-size:17px;position:relative}
+.l-art .ghostbolt{position:absolute;right:-60px;bottom:-80px;font-size:420px;opacity:.07}
+.l-form{display:grid;place-items:center;padding:32px}.l-form form{width:100%;max-width:380px}.l-form h2{font-size:30px;margin-bottom:24px}
+.l-form label{display:block;font-weight:600;font-size:14px;margin:0 0 6px}.l-form .f{margin-bottom:18px}
+.l-form input,.l-form select{width:100%;padding:12px 14px;border:1.5px solid var(--line);border-radius:12px;background:#fff}.l-form input:focus,.l-form select:focus{outline:none;border-color:var(--ultra);box-shadow:0 0 0 3px #DDE2FF}
+.pick{padding:10px 14px;border:1.5px solid var(--line);border-radius:12px;background:#fff;font-weight:600}
+@media(max-width:1000px){.session{grid-template-columns:1fr}.ledger{grid-template-columns:1fr 1fr}.ledger>div:nth-child(3){border-left:0}.main{padding:26px 22px 48px}.slot{grid-template-columns:1fr}}
+@media(max-width:820px){.side{width:72px;padding:18px 10px}.side .nav span,.side .logo span:last-child,.who,.livebadge{display:none}.logo{padding-bottom:22px;justify-content:center}.nav button{justify-content:center}.me{padding:8px;justify-content:center}.out{display:none}.login{grid-template-columns:1fr}.l-art{display:none}.stats{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+<style>
+.thr{display:grid;grid-template-columns:auto 1fr;gap:6px 20px;align-items:center}
+.meter{display:flex;gap:6px;margin-top:10px}.meter i{width:34px;height:10px;border-radius:9px;background:#E4E8FF}.meter i.f{background:var(--bad)}
+.ledger.three{grid-template-columns:repeat(3,1fr)}
+.slot.done{opacity:.65}
+.mode{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+@media(max-width:1000px){.ledger.three{grid-template-columns:1fr}.ledger.three>div{border-left:0;border-top:1px solid var(--line)}.ledger.three>div:first-child{border:0}}
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--paper);
-            color: var(--text-main);
-            margin: 0;
-            padding: 0;
-            overflow-x: hidden;
-        }
-
-        h1, h2, h3, h4, h5, h6, .brand-font {
-            font-family: 'Space Grotesk', sans-serif;
-        }
-
-        /* Utility classes utilizing CSS Variables */
-        .bg-ink { background-color: var(--ink); }
-        .bg-ink-2 { background-color: var(--ink-2); }
-        .bg-paper { background-color: var(--paper); }
-        .bg-card { background-color: var(--card); }
-        .bg-brand { background-color: var(--brand); }
-        .text-brand { color: var(--brand); }
-        .hover-bg-brand:hover { background-color: var(--brand-hover); }
-        .text-ink { color: var(--ink); }
-        
-        .border-custom { border-color: var(--border); }
-        .card-shadow { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03); }
-
-        /* Chart Animations */
-        .bar-chart-fill {
-            transition: height 1s ease-out;
-        }
-
-        /* Modal Transitions */
-        .modal-enter { opacity: 0; transform: scale(0.95); }
-        .modal-enter-active { opacity: 1; transform: scale(1); transition: opacity 200ms, transform 200ms; }
-    </style>
+.me{position:relative;cursor:pointer;user-select:none}
+.me:hover{background:rgba(255,255,255,.14)}
+.logout-menu{position:absolute;left:0;right:0;bottom:calc(100% + 8px);min-width:170px;background:#fff;border-radius:14px;padding:6px;box-shadow:0 10px 30px rgba(14,26,102,.35);z-index:60;display:none}
+.logout-menu.on{display:block}
+.logout-menu a{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;color:var(--bad);font-weight:600;text-decoration:none;font-size:14px}
+.logout-menu a:hover{background:#FDE4E7}
+</style>
 </head>
-<body class="antialiased h-screen flex flex-col md:flex-row overflow-hidden">
-
-    <div id="app-container" class="flex h-full w-full">
-
-        <!-- Sidebar -->
-        <aside class="w-64 bg-ink text-white flex flex-col h-full flex-shrink-0 transition-transform duration-300">
-            <div class="p-6 flex items-center gap-3">
-                <i class="ph-fill ph-lightning text-brand text-2xl"></i>
-                <span class="text-xl font-bold brand-font tracking-wide">F.L.A.S.H.</span>
-            </div>
-
-            <div class="px-6 py-2">
-                <div class="text-xs uppercase text-gray-400 font-semibold tracking-wider mb-2">Navigation</div>
-                <nav id="sidebar-nav" class="space-y-1">
-                    <!-- Dynamic links injected here -->
-                </nav>
-            </div>
-
-            <div class="mt-auto p-6 bg-ink-2 flex items-center justify-between">
-                <div class="flex items-center gap-3 overflow-hidden">
-                    <div class="w-8 h-8 rounded-full bg-brand flex items-center justify-center text-sm font-bold flex-shrink-0" id="user-initial">U</div>
-                    <div class="truncate">
-                        <div class="text-sm font-medium truncate" id="display-name">User Name</div>
-                        <div class="text-xs text-gray-400" id="display-role">Role</div>
-                    </div>
-                </div>
-            </div>
-        </aside>
-
-        <!-- Main Content Area -->
-        <main class="flex-1 flex flex-col h-full overflow-hidden bg-paper">
-            <header class="bg-card border-b border-custom px-8 py-4 flex items-center justify-between flex-shrink-0">
-                <h2 class="text-xl font-semibold brand-font text-ink capitalize" id="current-view-title">Dashboard</h2>
-                <div class="flex items-center gap-4">
-                    <div class="hidden md:flex items-center gap-2 text-sm text-text-muted bg-paper px-3 py-1.5 rounded-full border border-custom">
-                        <i class="ph ph-clock"></i>
-                        <span id="current-time">00:00 AM</span>
-                    </div>
-                </div>
-            </header>
-
-            <div id="view-container" class="flex-1 overflow-y-auto p-8 relative">
-                <!-- Content injected here via JS -->
-            </div>
-        </main>
-    </div>
-
-    <!-- Global Modal Overlay -->
-    <div id="global-modal" class="fixed inset-0 bg-ink/50 backdrop-blur-sm z-[100] hidden items-center justify-center p-4">
-        <div id="modal-content" class="bg-card w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden border border-custom">
-            <!-- Modal inner content injected here -->
-        </div>
-    </div>
-
-    <script>
-        // Fixed user for this dashboard (no login page)
-        const currentUser = { name: 'Juan Dela Cruz', role: 'SHS Student' };
-        let activeTimer = null;
-        let mockRosterInterval = null;
-
-        const navLinks = [
-                { id: 'home', label: 'Dashboard', icon: 'ph-squares-four' },
-                { id: 'scan', label: 'Scan QR / ID', icon: 'ph-qr-code' },
-                { id: 'schedule', label: 'My Schedule', icon: 'ph-calendar-blank' },
-                { id: 'history', label: 'Attendance History', icon: 'ph-clock-counter-clockwise' }
-            ];
-
-        // DOM Elements
-        const sidebarNav = document.getElementById('sidebar-nav');
-        const viewContainer = document.getElementById('view-container');
-        const currentViewTitle = document.getElementById('current-view-title');
-        const globalModal = document.getElementById('global-modal');
-        const modalContent = document.getElementById('modal-content');
-
-        // Clock
-        function updateClock() {
-            const now = new Date();
-            document.getElementById('current-time').innerText = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-        }
-        updateClock();
-        setInterval(updateClock, 1000);
-
-        // Profile block
-        document.getElementById('display-name').innerText = currentUser.name;
-        document.getElementById('display-role').innerText = currentUser.role;
-        document.getElementById('user-initial').innerText = currentUser.name.replace(/^(Prof\.|Dir\.)\s*/, '').charAt(0).toUpperCase();
-
-        function renderSidebar() {
-            sidebarNav.innerHTML = navLinks.map(link => `
-                <button onclick="switchView('${link.id}')" id="nav-${link.id}" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors text-gray-400 hover:text-white hover:bg-ink-2">
-                    <i class="ph ${link.icon} text-lg"></i>
-                    ${link.label}
-                </button>
-            `).join('');
-        }
-
-        function switchView(viewId) {
-            const links = sidebarNav.querySelectorAll('button');
-            links.forEach(l => {
-                l.classList.remove('bg-brand', 'text-white');
-                l.classList.add('text-gray-400');
-            });
-            const activeLink = document.getElementById(`nav-${viewId}`);
-            if (activeLink) {
-                activeLink.classList.remove('text-gray-400', 'hover:bg-ink-2');
-                activeLink.classList.add('bg-brand', 'text-white');
-                currentViewTitle.innerText = activeLink.innerText.trim();
-            }
-
-            clearTimers();
-            viewContainer.innerHTML = '';
-            renderView(viewId);
-        }
-
-        function clearTimers() {
-            if(activeTimer) clearInterval(activeTimer);
-            if(mockRosterInterval) clearInterval(mockRosterInterval);
-        }
-
-        function showModal(contentHTML) {
-            modalContent.innerHTML = contentHTML;
-            globalModal.classList.remove('hidden');
-            globalModal.classList.add('flex');
-        }
-
-        function closeModal() {
-            globalModal.classList.add('hidden');
-            globalModal.classList.remove('flex');
-        }
-
-        function renderView(viewId) {
-            let html = '';
-            if (viewId === 'home') {
-                html = `
-                    <div class="mb-6">
-                        <h3 class="text-2xl font-bold text-ink brand-font mb-1">Welcome back, ${currentUser.name.split(' ')[0]}!</h3>
-                        <p class="text-text-muted">Here is your attendance overview for this semester.</p>
-                    </div>
-                    
-                    <!-- Threshold Warning Alert based on ERD logic -->
-                    <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg mb-8 shadow-sm">
-                        <div class="flex items-start gap-3">
-                            <i class="ph-fill ph-warning-circle text-red-500 text-xl mt-0.5"></i>
-                            <div>
-                                <h4 class="text-red-800 font-semibold text-sm">Absence Threshold Alert</h4>
-                                <p class="text-red-700 text-sm mt-1">You have reached 3/4 allowed absences for <strong>CS101 - Data Structures</strong>. One more absence will result in an automatic drop warning.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div class="bg-card p-6 rounded-xl border border-custom card-shadow">
-                            <div class="text-text-muted text-sm font-medium mb-2">Total Classes</div>
-                            <div class="text-3xl font-bold text-ink">42</div>
-                        </div>
-                        <div class="bg-card p-6 rounded-xl border border-custom card-shadow">
-                            <div class="text-text-muted text-sm font-medium mb-2">Present</div>
-                            <div class="text-3xl font-bold text-success">38</div>
-                        </div>
-                        <div class="bg-card p-6 rounded-xl border border-custom card-shadow">
-                            <div class="text-text-muted text-sm font-medium mb-2">Absences</div>
-                            <div class="text-3xl font-bold text-danger">4</div>
-                        </div>
-                    </div>
-                `;
-            } else if (viewId === 'scan') {
-                html = `
-                    <div class="max-w-2xl mx-auto bg-card rounded-2xl border border-custom card-shadow overflow-hidden">
-                        <div class="p-6 border-b border-custom bg-paper flex justify-between items-center">
-                            <h3 class="font-bold text-ink brand-font text-lg">Check-In Interface</h3>
-                            <div class="flex items-center gap-2 bg-gray-200 p-1 rounded-lg">
-                                <button onclick="setScanMode('mobile')" id="btn-mode-mobile" class="px-3 py-1.5 text-sm font-medium rounded-md bg-white shadow-sm transition-all">Mobile App</button>
-                                <button onclick="setScanMode('webcam')" id="btn-mode-webcam" class="px-3 py-1.5 text-sm font-medium rounded-md text-gray-500 hover:text-ink transition-all">Webcam (ID)</button>
-                            </div>
-                        </div>
-                        <div class="p-8 flex flex-col items-center">
-                            <div class="w-64 h-64 bg-gray-100 border-2 border-dashed border-gray-300 rounded-xl mb-6 flex flex-col items-center justify-center relative overflow-hidden" id="scanner-viewport">
-                                <i class="ph ph-camera text-4xl text-gray-400 mb-2"></i>
-                                <span class="text-sm text-gray-500" id="scanner-instruction">Ready to scan QR</span>
-                                <div class="absolute inset-0 bg-blue-500/10 border-blue-500 border-2 hidden" id="scan-frame"></div>
-                            </div>
-                            
-                            <div id="scan-status" class="w-full text-center min-h-[4rem]">
-                                <!-- Status updates injected here -->
-                            </div>
-
-                            <button onclick="simulateStudentScan()" class="mt-4 bg-brand hover-bg-brand text-white px-6 py-2.5 rounded-lg font-medium transition-colors flex items-center gap-2">
-                                <i class="ph ph-scan"></i> Simulate Scan Process
-                            </button>
-                        </div>
-                    </div>
-                `;
-            } else if (viewId === 'schedule') {
-                html = `
-                    <div class="bg-card rounded-xl border border-custom card-shadow overflow-hidden">
-                        <table class="w-full text-left border-collapse">
-                            <thead>
-                                <tr class="bg-paper border-b border-custom">
-                                    <th class="py-3 px-6 text-sm font-semibold text-text-muted">Time</th>
-                                    <th class="py-3 px-6 text-sm font-semibold text-text-muted">Course</th>
-                                    <th class="py-3 px-6 text-sm font-semibold text-text-muted">Room</th>
-                                    <th class="py-3 px-6 text-sm font-semibold text-text-muted">Instructor</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr class="border-b border-custom">
-                                    <td class="py-4 px-6 text-sm text-ink font-medium">08:00 AM - 09:30 AM</td>
-                                    <td class="py-4 px-6 text-sm font-semibold brand-font text-brand">CS101 - Data Structures</td>
-                                    <td class="py-4 px-6 text-sm text-text-main">Room 304</td>
-                                    <td class="py-4 px-6 text-sm text-text-main">Dr. Smith</td>
-                                </tr>
-                                <tr class="border-b border-custom">
-                                    <td class="py-4 px-6 text-sm text-ink font-medium">10:00 AM - 11:30 AM</td>
-                                    <td class="py-4 px-6 text-sm font-semibold brand-font text-brand">ENG201 - Literature</td>
-                                    <td class="py-4 px-6 text-sm text-text-main">Online</td>
-                                    <td class="py-4 px-6 text-sm text-text-main">Prof. Allen</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                `;
-            } else if (viewId === 'history') {
-                html = `
-                     <div class="bg-card rounded-xl border border-custom card-shadow overflow-hidden">
-                        <div class="p-5 border-b border-custom flex justify-between items-center bg-paper">
-                            <h3 class="font-bold text-ink brand-font">Recent Logs</h3>
-                            <button class="text-sm text-brand font-medium">Filter</button>
-                        </div>
-                        <ul class="divide-y divide-custom">
-                            <li class="p-5 flex items-center justify-between">
-                                <div>
-                                    <div class="font-semibold text-ink text-sm">CS101 - Data Structures</div>
-                                    <div class="text-xs text-text-muted mt-1">Sept 28, 2026 • 08:02 AM</div>
-                                </div>
-                                <span class="px-3 py-1 text-xs font-medium bg-green-100 text-green-700 rounded-full flex items-center gap-1">
-                                    <i class="ph-fill ph-map-pin"></i> Onsite (APC)
-                                </span>
-                            </li>
-                            <li class="p-5 flex items-center justify-between">
-                                <div>
-                                    <div class="font-semibold text-ink text-sm">ENG201 - Literature</div>
-                                    <div class="text-xs text-text-muted mt-1">Sept 27, 2026 • 10:01 AM</div>
-                                </div>
-                                <span class="px-3 py-1 text-xs font-medium bg-blue-100 text-blue-700 rounded-full flex items-center gap-1">
-                                    <i class="ph-fill ph-globe"></i> Online
-                                </span>
-                            </li>s
-                            <li class="p-5 flex items-center justify-between">
-                                <div>
-                                    <div class="font-semibold text-ink text-sm">MATH104 - Calculus</div>
-                                    <div class="text-xs text-text-muted mt-1">Sept 26, 2026 • 01:15 PM</div>
-                                </div>
-                                <span class="px-3 py-1 text-xs font-medium bg-red-100 text-red-700 rounded-full">
-                                    Late
-                                </span>
-                            </li>
-                        </ul>
-                    </div>
-                `;
-            }
-            viewContainer.innerHTML = html;
-        }
-
-        // Student Scan Interactive Logic
-        window.setScanMode = function(mode) {
-            const btnMobile = document.getElementById('btn-mode-mobile');
-            const btnWebcam = document.getElementById('btn-mode-webcam');
-            const instruction = document.getElementById('scanner-instruction');
-            
-            if(mode === 'mobile') {
-                btnMobile.className = 'px-3 py-1.5 text-sm font-medium rounded-md bg-white shadow-sm transition-all text-ink';
-                btnWebcam.className = 'px-3 py-1.5 text-sm font-medium rounded-md text-gray-500 hover:text-ink transition-all';
-                instruction.innerText = 'Ready to scan QR Code';
-            } else {
-                btnWebcam.className = 'px-3 py-1.5 text-sm font-medium rounded-md bg-white shadow-sm transition-all text-ink';
-                btnMobile.className = 'px-3 py-1.5 text-sm font-medium rounded-md text-gray-500 hover:text-ink transition-all';
-                instruction.innerText = 'Show Physical ID to Webcam';
-            }
-        };
-
-        window.simulateStudentScan = function() {
-            const statusBox = document.getElementById('scan-status');
-            const frame = document.getElementById('scan-frame');
-            
-            statusBox.innerHTML = `<div class="text-brand font-medium flex items-center justify-center gap-2 animate-pulse"><i class="ph ph-spinner animate-spin"></i> Scanning...</div>`;
-            frame.classList.remove('hidden');
-
-            setTimeout(() => {
-                statusBox.innerHTML = `<div class="text-warning font-medium flex items-center justify-center gap-2 animate-pulse"><i class="ph ph-map-pin"></i> Validating Geolocation...</div>`;
-                
-                setTimeout(() => {
-                    frame.classList.add('hidden');
-                    // Randomly assign Onsite or Online
-                    const isOnsite = Math.random() > 0.5;
-                    if(isOnsite) {
-                        statusBox.innerHTML = `
-                            <div class="text-success font-semibold text-lg flex items-center justify-center gap-2">
-                                <i class="ph-fill ph-check-circle"></i> Check-in Successful
-                            </div>
-                            <p class="text-sm text-text-muted mt-1">Tagged as: <span class="font-bold text-ink">Onsite (APC Geofence Verified)</span></p>
-                        `;
-                    } else {
-                        statusBox.innerHTML = `
-                            <div class="text-success font-semibold text-lg flex items-center justify-center gap-2">
-                                <i class="ph-fill ph-check-circle"></i> Check-in Successful
-                            </div>
-                            <p class="text-sm text-text-muted mt-1">Tagged as: <span class="font-bold text-ink">Online (Outside Geofence)</span></p>
-                        `;
-                    }
-                }, 2000);
-            }, 1500);
-        };
-
-        // Initialize inline keyframes for UI animations
-        const style = document.createElement('style');
-        style.innerHTML = `
-            @keyframes fadeIn {
-                from { opacity: 0; transform: translateY(10px); }
-                to { opacity: 1; transform: translateY(0); }
-            }
-        `;
-        document.head.appendChild(style);
-
-        // Boot
-        renderSidebar();
-        switchView('home');
-
-    </script>
+<body>
+<div class="app" id="app"><aside class="side"><div class="logo"><span class="bolt"><i class="ph-fill ph-lightning"></i></span><span>F.L.A.S.H.</span></div>
+<nav class="nav" id="nav" aria-label="Main"></nav>
+<div class="me"><div class="av" id="uav">U</div><div class="who"><b id="uname"></b><small id="urole"></small></div></div></aside>
+<main class="main" id="main" tabindex="-1"></main></div>
+<script>
+const $=s=>document.querySelector(s);
+const USER={name:'Juan Dela Cruz',role:'SHS Student'};
+const NAV=[['home','Dashboard','ph-squares-four'],['scan','Scan QR / ID','ph-qr-code'],['schedule','My Schedule','ph-calendar-blank'],['history','Attendance History','ph-clock-counter-clockwise']];
+let view='home',mode='mobile',timers=[];
+const time=()=>new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+setInterval(()=>document.querySelectorAll('.clk span').forEach(e=>e.textContent=time()),1000);
+function head(t,sub,extra=''){return `<header class="head"><div><h1>${t}</h1><p>${sub}</p></div><div class="right">${extra}<span class="chip clk"><i class="ph ph-clock"></i><span>${time()}</span></span></div></header>`}
+function boot(){$('#uname').textContent=USER.name;$('#urole').textContent=USER.role;$('#uav').textContent=USER.name.charAt(0);
+$('#nav').innerHTML=NAV.map(([id,l,ic])=>`<button data-v="${id}" onclick="go('${id}')"><i class="ph ${ic}"></i><span>${l}</span></button>`).join('');go('home')}
+function go(v){view=v;timers.forEach(clearTimeout);timers=[];
+document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('on',b.dataset.v===v));
+$('#main').innerHTML=render(v);$('#main').scrollTop=0}
+function render(v){
+if(v==='home')return head('Welcome back, '+USER.name.split(' ')[0],'Here is your attendance overview for this semester.')+`
+<div class="notice"><i class="ph-fill ph-warning-circle"></i><div><b>Absence Threshold Alert</b><p>You have reached 3/4 allowed absences for <strong>CS101 - Data Structures</strong>. One more absence will result in an automatic drop warning.</p><div class="meter" aria-label="3 of 4 absences"><i class="f"></i><i class="f"></i><i class="f"></i><i></i></div></div></div>
+<div class="panel ledger three"><div><small>Total Classes</small><b>42</b><span>This semester</span></div>
+<div><small>Present</small><b style="color:var(--ok)">38</b><span class="up"><i class="ph-bold ph-check-circle"></i>90% attendance</span></div>
+<div><small>Absences</small><b style="color:var(--bad)">4</b><span class="dn"><i class="ph-bold ph-warning"></i>Needs attention</span></div></div>
+<h2 class="sec">Up next</h2>
+<div class="panel slot next"><div class="t">08:00<small>to 09:30</small></div><div><h3>CS101 - Data Structures</h3><p>Room 304 &middot; Dr. Smith</p></div><button class="btn flash" onclick="go('scan')"><i class="ph-bold ph-qr-code"></i>Check in</button></div>`;
+if(v==='scan')return head('Scan QR / ID','Check in to your class.')+`
+<div class="panel pad scan"><div class="mode"><h3 class="sec" style="margin:0">Check-In Interface</h3>
+<div class="seg" role="group" aria-label="Scan mode"><button id="m-mobile" class="${mode==='mobile'?'on':''}" onclick="setMode('mobile')">Mobile App</button><button id="m-webcam" class="${mode==='webcam'?'on':''}" onclick="setMode('webcam')">Webcam (ID)</button></div></div>
+<div class="viewfinder" id="vf"><div><i class="ph ph-camera"></i><span id="ins">${mode==='mobile'?'Ready to scan QR Code':'Show Physical ID to Webcam'}</span></div></div>
+<div class="status" id="st"></div>
+<button class="btn full" id="scanbtn" onclick="scan()"><i class="ph-bold ph-scan"></i>Simulate Scan Process</button></div>`;
+if(v==='schedule')return head('My Schedule','Your classes for today.')+`
+<div class="panel slot next"><div class="t">08:00<small>to 09:30</small></div><div><h3>CS101 - Data Structures</h3><p>Room 304 &middot; Dr. Smith</p></div><span class="tag info">Next</span></div>
+<div class="panel slot later"><div class="t">10:00<small>to 11:30</small></div><div><h3>ENG201 - Literature</h3><p>Online &middot; Prof. Allen</p></div><span class="tag info">Later</span></div>`;
+if(v==='history')return head('Attendance History','Your recent check-in logs.','<button class="btn ghost"><i class="ph ph-funnel"></i>Filter</button>')+`
+<div class="panel list" style="overflow:hidden">
+<div><div><b>CS101 - Data Structures</b><small>Sept 28, 2026 &middot; 08:02 AM</small></div><span class="tag ok"><i class="ph-fill ph-map-pin"></i>Onsite (APC)</span></div>
+<div><div><b>ENG201 - Literature</b><small>Sept 27, 2026 &middot; 10:01 AM</small></div><span class="tag info"><i class="ph-fill ph-globe"></i>Online</span></div>
+<div><div><b>MATH104 - Calculus</b><small>Sept 26, 2026 &middot; 01:15 PM</small></div><span class="tag bad">Late</span></div></div>`}
+function setMode(m){mode=m;go('scan')}
+function scan(){const st=$('#st'),vf=$('#vf'),b=$('#scanbtn');b.disabled=true;vf.classList.add('on');
+st.innerHTML='<b style="color:var(--ultra)"><span class="pulse"></span>Scanning...</b>';
+timers.push(setTimeout(()=>{st.innerHTML='<b style="color:var(--warn)"><i class="ph ph-map-pin"></i>Validating Geolocation...</b>';
+timers.push(setTimeout(()=>{vf.classList.remove('on');b.disabled=false;const on=Math.random()>.5;
+st.innerHTML=`<b style="color:var(--ok)"><i class="ph-fill ph-check-circle"></i>Check-in Successful</b><p>Tagged as: <strong style="color:var(--ink)">${on?'Onsite (APC Geofence Verified)':'Online (Outside Geofence)'}</strong></p>`},2000))},1500))}
+boot();
+</script>
+<script>
+(function(){var me=document.querySelector('.me');if(!me)return;
+me.setAttribute('role','button');me.setAttribute('tabindex','0');me.setAttribute('aria-haspopup','true');me.setAttribute('aria-expanded','false');
+var m=document.createElement('div');m.className='logout-menu';m.innerHTML='<a href="index.html"><i class="ph ph-sign-out"></i>Log out</a>';me.appendChild(m);
+function t(o){var s=o===undefined?!m.classList.contains('on'):o;m.classList.toggle('on',s);me.setAttribute('aria-expanded',s)}
+me.addEventListener('click',function(e){if(e.target.closest('.logout-menu'))return;t()});
+me.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){if(e.target.closest('.logout-menu'))return;e.preventDefault();t()}if(e.key==='Escape')t(false)});
+document.addEventListener('click',function(e){if(!me.contains(e.target))t(false)});
+})();
+</script>
 </body>
 </html>
